@@ -21,6 +21,7 @@ class ProfesseurController extends AbstractController
      */
     public function index(ProfesseurRepository $profRepository): Response
     {
+        dump($profRepository->findAll());
         return $this->render('user/chooseUser.html.twig', [
             'profs' => $profRepository->findAll(),
         ]);

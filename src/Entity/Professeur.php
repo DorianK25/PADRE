@@ -6,16 +6,18 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProfesseurRepository")
  */
-class Professeur implements UserLoaderInterface {
+class Professeur {
 
 
     /**
-     * @ORM\id()
+     * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
+
+    
 
     /**
      * @ORM\Column(type="string", length=255)
