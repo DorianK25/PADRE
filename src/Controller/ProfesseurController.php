@@ -19,10 +19,10 @@ class ProfesseurController extends AbstractController
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-    public function index(ProfesseurRepository $userRepository): Response
+    public function index(ProfesseurRepository $profRepository): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+        return $this->render('user/chooseUser.html.twig', [
+            'profs' => $profRepository->findAll(),
         ]);
     }
 
