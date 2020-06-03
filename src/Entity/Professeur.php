@@ -37,4 +37,28 @@ class Professeur {
     }
 
     
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the value of Prenom
+     */ 
+    public function getPrenom()
+    {
+        return $this->Prenom;
+    }
+
+    /**
+     * Get the value of Nom
+     */ 
+    public function getNom()
+    {
+        return $this->Nom;
+    }
 }
