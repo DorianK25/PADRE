@@ -1,3 +1,25 @@
 
+{% extends "base.html.twig" %}
 
-{% block body %}Bonjour{% endblock %}
+{% block body %}
+
+Bonjour qui êtes vous :
+
+    <select>
+    {% for prof in profs %}
+        <option>{{ prof.Nom }} {{ prof.Prenom }} </option>
+    {% endfor %}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
