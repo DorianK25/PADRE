@@ -2,18 +2,14 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div id="form">
-Bonjour qui êtes vous :
+{{ form_start(form) }}
+    <p>Bonjour qui êtes vous :</p>
 
-    <select>
-    {% for prof in profs %}
-        <option>{{ prof.getNom }} {{ prof.getPrenom }} </option>
-    {% endfor %}
-    </select>
+    {{ form_widget(form.prof) }}
 
-    <button class="btn btn-secondary btn-sm" id="logIn">valider</button>
+    <br><button class="btn btn-success"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
 
-</div>
+{{ form_end(form) }}
 
 
 

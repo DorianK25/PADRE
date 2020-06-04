@@ -61,4 +61,9 @@ class Professeur {
     {
         return $this->Nom;
     }
+
+    public function getNomComplet(){
+
+        return $this->Nom." ".$this->Prenom;
+    }
 }
