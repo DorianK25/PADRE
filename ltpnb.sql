@@ -121,3 +121,26 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Structure de la table `mot_de_passe_admin`
+--
+
+DROP TABLE IF EXISTS `mot_de_passe_admin`;
+CREATE TABLE IF NOT EXISTS `mot_de_passe_admin` (
+  `id_mdp` int(11) NOT NULL AUTO_INCREMENT,
+  `mot_de_passe` varchar(250) NOT NULL,
+  PRIMARY KEY (`id_mdp`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Déchargement des données de la table `mot_de_passe_admin`
+--
+
+INSERT INTO `mot_de_passe_admin` (`id_mdp`, `mot_de_passe`) VALUES (NULL, 'theodorian');
