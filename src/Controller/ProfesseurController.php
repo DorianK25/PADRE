@@ -19,15 +19,18 @@ class ProfesseurController extends AbstractController
 
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/connexion", name="prof_connexion")
      */
-    public function index(Request $request,ProfesseurRepository $profRepository): Response
+    public function connexion(Request $request,ProfesseurRepository $profRepository): Response
     {
 
         $form=$this->createForm(ProfType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getData());
+            
+            $request->getSession()->set("Prof",$form->getData()["prof"]);
+            return $this->redirectToRoute("main");
         
         }
         
@@ -35,6 +38,16 @@ class ProfesseurController extends AbstractController
             'profs' => $profRepository->findAll(),
             'form'=> $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/deconnexion", name="prof_deconnexion")
+     */
+    public function deconnexion(Request $request): Response
+    {
+
+        $request->getSession()->remove("Prof");
+        return $this->redirectToRoute("main");
     }
 
     
