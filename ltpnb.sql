@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 12 juin 2020 à 09:07
+-- Généré le :  ven. 12 juin 2020 à 17:27
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -60,7 +60,8 @@ DROP TABLE IF EXISTS `competence`;
 CREATE TABLE IF NOT EXISTS `competence` (
   `id_competence` int(11) NOT NULL,
   `nom_competence` varchar(250) NOT NULL,
-  `intutile` varchar(250) NOT NULL
+  `intitule` varchar(250) NOT NULL,
+  `id_capacite` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -98,6 +99,26 @@ CREATE TABLE IF NOT EXISTS `groupe` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `mot_de_passe_admin`
+--
+
+DROP TABLE IF EXISTS `mot_de_passe_admin`;
+CREATE TABLE IF NOT EXISTS `mot_de_passe_admin` (
+  `id_mdp` int(11) NOT NULL AUTO_INCREMENT,
+  `mot_de_passe` varchar(250) NOT NULL,
+  PRIMARY KEY (`id_mdp`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `mot_de_passe_admin`
+--
+
+INSERT INTO `mot_de_passe_admin` (`id_mdp`, `mot_de_passe`) VALUES
+(1, 'theodorian');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `professeur`
 --
 
@@ -116,31 +137,36 @@ CREATE TABLE IF NOT EXISTS `professeur` (
 INSERT INTO `professeur` (`Nom`, `Prenom`, `id`) VALUES
 ('Keurinck', 'Stephane', 1),
 ('Basuyaux', 'Jean-Philipe', 2);
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
+-- --------------------------------------------------------
 
 --
--- Structure de la table `mot_de_passe_admin`
+-- Structure de la table `tps`
 --
 
-DROP TABLE IF EXISTS `mot_de_passe_admin`;
-CREATE TABLE IF NOT EXISTS `mot_de_passe_admin` (
-  `id_mdp` int(11) NOT NULL AUTO_INCREMENT,
-  `mot_de_passe` varchar(250) NOT NULL,
-  PRIMARY KEY (`id_mdp`)
+DROP TABLE IF EXISTS `tps`;
+CREATE TABLE IF NOT EXISTS `tps` (
+  `id_tps` int(11) NOT NULL AUTO_INCREMENT,
+  `nom_tps` varchar(250) NOT NULL,
+  PRIMARY KEY (`id_tps`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tps_note`
+--
+
+DROP TABLE IF EXISTS `tps_note`;
+CREATE TABLE IF NOT EXISTS `tps_note` (
+  `id_tp_note` int(11) NOT NULL AUTO_INCREMENT,
+  `id_eleve` int(11) NOT NULL,
+  `note` int(11) NOT NULL,
+  `id_tp` int(11) NOT NULL,
+  PRIMARY KEY (`id_tp_note`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---
--- Déchargement des données de la table `mot_de_passe_admin`
---
-
-INSERT INTO `mot_de_passe_admin` (`id_mdp`, `mot_de_passe`) VALUES (NULL, 'theodorian');
