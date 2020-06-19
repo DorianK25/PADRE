@@ -19,10 +19,7 @@ class Capacite {
 
 
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom_Capacite;
+   
 
 
     /**
@@ -30,34 +27,6 @@ class Capacite {
      */
     private $intutule;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Competence")
-     */
-    private $competence;
-
-
-
-
-    /**
-     * Get the value of competence
-     */ 
-    public function getCompetence()
-    {
-        return $this->competence;
-    }
-
-    /**
-     * Set the value of competence
-     *
-     * @return  self
-     */ 
-    public function setCompetence($competence)
-    {
-        $this->competence = $competence;
-
-        return $this;
-    }
 
     /**
      * Get the value of intutule
@@ -79,25 +48,7 @@ class Capacite {
         return $this;
     }
 
-    /**
-     * Get the value of nom_Capacite
-     */ 
-    public function getNom_Capacite()
-    {
-        return $this->nom_Capacite;
-    }
-
-    /**
-     * Set the value of nom_Capacite
-     *
-     * @return  self
-     */ 
-    public function setNom_Capacite($nom_Capacite)
-    {
-        $this->nom_Capacite = $nom_Capacite;
-
-        return $this;
-    }
+    
 
     /**
      * Get the value of id_capacite
@@ -106,4 +57,6 @@ class Capacite {
     {
         return $this->id_capacite;
     }
+
+    
 }

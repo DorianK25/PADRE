@@ -31,4 +31,52 @@ class Classe {
 
 
     
+
+    /**
+     * Get the value of id_classe
+     */ 
+    public function getId_classe()
+    {
+        return $this->id_classe;
+    }
+
+    /**
+     * Get the value of nom_classe
+     */ 
+    public function getNom_classe()
+    {
+        return $this->nom_classe;
+    }
+
+    /**
+     * Set the value of nom_classe
+     *
+     * @return  self
+     */ 
+    public function setNom_classe($nom_classe)
+    {
+        $this->nom_classe = $nom_classe;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of annee
+     */ 
+    public function getAnnee()
+    {
+        return $this->annee;
+    }
+
+    /**
+     * Set the value of annee
+     *
+     * @return  self
+     */ 
+    public function setAnnee($annee)
+    {
+        $this->annee = $annee;
+
+        return $this;
+    }
 }

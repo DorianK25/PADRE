@@ -33,5 +33,98 @@ class tp_note {
      * @ORM\Column(type="integer")
     */
     private $note;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Professeur")
+     */
+    private $prof;
     
+
+    /**
+     * Get the value of id_tp_note
+     */ 
+    public function getId_tp_note()
+    {
+        return $this->id_tp_note;
+    }
+
+    /**
+     * Get the value of eleve
+     */ 
+    public function getEleve()
+    {
+        return $this->eleve;
+    }
+
+    /**
+     * Set the value of eleve
+     *
+     * @return  self
+     */ 
+    public function setEleve($eleve)
+    {
+        $this->eleve = $eleve;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tp
+     */ 
+    public function getTp()
+    {
+        return $this->tp;
+    }
+
+    /**
+     * Set the value of tp
+     *
+     * @return  self
+     */ 
+    public function setTp($tp)
+    {
+        $this->tp = $tp;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of note
+     */ 
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set the value of note
+     *
+     * @return  self
+     */ 
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of prof
+     */ 
+    public function getProf()
+    {
+        return $this->prof;
+    }
+
+    /**
+     * Set the value of prof
+     *
+     * @return  self
+     */ 
+    public function setProf($prof)
+    {
+        $this->prof = $prof;
+
+        return $this;
+    }
 }

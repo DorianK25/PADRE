@@ -29,4 +29,52 @@ class Groupe {
      */
     private $classe;
 
+
+    /**
+     * Get the value of id_groupe
+     */ 
+    public function getId_groupe()
+    {
+        return $this->id_groupe;
+    }
+
+    /**
+     * Get the value of nom_groupe
+     */ 
+    public function getNom_groupe()
+    {
+        return $this->nom_groupe;
+    }
+
+    /**
+     * Set the value of nom_groupe
+     *
+     * @return  self
+     */ 
+    public function setNom_groupe($nom_groupe)
+    {
+        $this->nom_groupe = $nom_groupe;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of classe
+     */ 
+    public function getClasse()
+    {
+        return $this->classe;
+    }
+
+    /**
+     * Set the value of classe
+     *
+     * @return  self
+     */ 
+    public function setClasse($classe)
+    {
+        $this->classe = $classe;
+
+        return $this;
+    }
 }

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 12 juin 2020 à 17:27
--- Version du serveur :  5.7.21
--- Version de PHP :  7.2.4
+-- Généré le :  ven. 19 juin 2020 à 17:02
+-- Version du serveur :  5.7.24
+-- Version de PHP :  7.1.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -13,7 +13,10 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données :  `ltpnb`
@@ -28,9 +31,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `capacite`;
 CREATE TABLE IF NOT EXISTS `capacite` (
   `id_capacite` int(11) NOT NULL,
-  `nom_capacite` varchar(250) NOT NULL,
-  `intitule` varchar(250) NOT NULL,
-  `id_competence` int(11) NOT NULL
+  `intitule` varchar(250) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -56,9 +57,24 @@ CREATE TABLE IF NOT EXISTS `classe` (
 DROP TABLE IF EXISTS `competence`;
 CREATE TABLE IF NOT EXISTS `competence` (
   `id_competence` int(11) NOT NULL,
-  `nom_competence` varchar(250) NOT NULL,
+  `code_competence` varchar(250) NOT NULL,
   `intitule` varchar(250) NOT NULL,
   `id_capacite` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `competence_tp`
+--
+
+DROP TABLE IF EXISTS `competence_tp`;
+CREATE TABLE IF NOT EXISTS `competence_tp` (
+  `id_competence_tp` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tp` int(11) NOT NULL,
+  `id_competence` int(11) NOT NULL,
+  `barem_competence` int(11) NOT NULL,
+  PRIMARY KEY (`id_competence_tp`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -76,6 +92,8 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   `id_binome` int(11) NOT NULL,
   `id_groupe` int(11) NOT NULL,
   `id_classe` int(11) NOT NULL,
+  `mail` varchar(250) NOT NULL,
+  `url_photo` varchar(250) NOT NULL,
   PRIMARY KEY (`id_eleve`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -138,29 +156,37 @@ INSERT INTO `professeur` (`Nom`, `Prenom`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tps`
+-- Structure de la table `tp`
 --
 
-DROP TABLE IF EXISTS `tps`;
-CREATE TABLE IF NOT EXISTS `tps` (
-  `id_tps` int(11) NOT NULL AUTO_INCREMENT,
-  `nom_tps` varchar(250) NOT NULL,
-  PRIMARY KEY (`id_tps`)
+DROP TABLE IF EXISTS `tp`;
+CREATE TABLE IF NOT EXISTS `tp` (
+  `id_tp` int(11) NOT NULL AUTO_INCREMENT,
+  `nom_tp` varchar(250) NOT NULL,
+  `Domaine` varchar(250) NOT NULL,
+  `numero` int(11) NOT NULL,
+  `nom_fichier` varchar(250) NOT NULL,
+  `descriprif` varchar(250) NOT NULL,
+  PRIMARY KEY (`id_tp`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tps_note`
+-- Structure de la table `tp_note`
 --
 
-DROP TABLE IF EXISTS `tps_note`;
-CREATE TABLE IF NOT EXISTS `tps_note` (
+DROP TABLE IF EXISTS `tp_note`;
+CREATE TABLE IF NOT EXISTS `tp_note` (
   `id_tp_note` int(11) NOT NULL AUTO_INCREMENT,
   `id_eleve` int(11) NOT NULL,
   `note` int(11) NOT NULL,
   `id_tp` int(11) NOT NULL,
+  `id_professeur` int(11) NOT NULL,
   PRIMARY KEY (`id_tp_note`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+COMMIT;
 
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

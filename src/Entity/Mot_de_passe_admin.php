@@ -28,4 +28,32 @@ class Mot_de_passe_admin {
 
 
     
+
+    /**
+     * Get the value of id_mdp
+     */ 
+    public function getId_mdp()
+    {
+        return $this->id_mdp;
+    }
+
+    /**
+     * Get the value of mot_de_passe
+     */ 
+    public function getMot_de_passe()
+    {
+        return $this->mot_de_passe;
+    }
+
+    /**
+     * Set the value of mot_de_passe
+     *
+     * @return  self
+     */ 
+    public function setMot_de_passe($mot_de_passe)
+    {
+        $this->mot_de_passe = $mot_de_passe;
+
+        return $this;
+    }
 }

@@ -22,7 +22,7 @@ class Competence {
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom_competence;
+    private $code_competence;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,21 +48,21 @@ class Competence {
     
 
     /**
-     * Get the value of nom_competence
+     * Get the value of code_competence
      */ 
-    public function getNom_competence()
+    public function getcode_competence()
     {
-        return $this->nom_competence;
+        return $this->code_competence;
     }
 
     /**
-     * Set the value of nom_competence
+     * Set the value of code_competence
      *
      * @return  self
      */ 
-    public function setNom_competence($nom_competence)
+    public function setcode_competence($code_competence)
     {
-        $this->nom_competence = $nom_competence;
+        $this->code_competence = $code_competence;
 
         return $this;
     }
