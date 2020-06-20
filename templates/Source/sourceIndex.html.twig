@@ -2,6 +2,16 @@
 {% block script %}
 <script>
 
+function setbarem(id){
+
+
+    console.log(id)
+    $(".spinner"+id).each(function(){
+                            console.log($(this).val());
+                            console.log($(this).attr("idCompetence"));
+                        });
+}
+
 $(document).ready(function(){
 
    
@@ -12,7 +22,7 @@ $(document).ready(function(){
 
         });*/
         {% for tp in tps %}
-                            
+            $("btn{{ tp.id }}").prop("disabled",true);               
             $(".spinner{{ tp.id }}").spinner({ min: 0, max: 20,spin: function (event, ui) {
                         var somme=0;
                         
@@ -26,15 +36,16 @@ $(document).ready(function(){
                             
                             $(".spinner{{ tp.id }}").each(function(){
                                 $(this).next(".ui-spinner-up").toggle();
+                                $("#btn{{ tp.id }}").attr("disabled",false);
                             });
                             
                         }else
                             $(".spinner{{ tp.id }}").each(function(){
                                 $(this).next(".ui-spinner-up").show();
+                                $("#btn{{ tp.id }}").attr("disabled",true);
                             });
                         
-                        //"<a class='ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only' tabindex='-1' role='button' aria-disabled='true'><span class='ui-button-text'><span class='ui-icon ui-icon-triangle-1-n'>▲</span></span></a>"
-
+                        
 
                     }
             });
@@ -100,13 +111,21 @@ $(document).ready(function(){
                         {% for tp in tps %}
                             
                             
-                            <td><input id="spinner{{ tp.id }}{{ competence.id }}" class="spinner{{ tp.id }}" value="0" name="value" /></td>
+                            <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="0" name="value" /></td>
                         {% endfor %}
                     </tr>
             {% endfor %}
             
         {% endfor %}
-        
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {% for tp in tps %}
+            <td><input type="button" class="form btn btn-primary" id="btn{{ tp.id }}" disabled="true" onclick="setbarem({{ tp.id }})" value="valider" style="margin-left:50%;margin-right:50%"></td>
+            {% endfor %}
+        </tr>
     </table>
 
 
