@@ -14,7 +14,7 @@ class tp_note {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_tp_note;
+    private $id;
 
 
     
@@ -40,13 +40,6 @@ class tp_note {
     private $prof;
     
 
-    /**
-     * Get the value of id_tp_note
-     */ 
-    public function getId_tp_note()
-    {
-        return $this->id_tp_note;
-    }
 
     /**
      * Get the value of eleve
@@ -126,5 +119,13 @@ class tp_note {
         $this->prof = $prof;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

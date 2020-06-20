@@ -14,7 +14,7 @@ class Classe {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_classe;
+    private $id;
 
 
     
@@ -32,13 +32,7 @@ class Classe {
 
     
 
-    /**
-     * Get the value of id_classe
-     */ 
-    public function getId_classe()
-    {
-        return $this->id_classe;
-    }
+    
 
     /**
      * Get the value of nom_classe
@@ -78,5 +72,13 @@ class Classe {
         $this->annee = $annee;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

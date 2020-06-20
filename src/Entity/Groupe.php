@@ -14,7 +14,7 @@ class Groupe {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_groupe;
+    private $id;
 
 
     
@@ -29,14 +29,6 @@ class Groupe {
      */
     private $classe;
 
-
-    /**
-     * Get the value of id_groupe
-     */ 
-    public function getId_groupe()
-    {
-        return $this->id_groupe;
-    }
 
     /**
      * Get the value of nom_groupe
@@ -76,5 +68,13 @@ class Groupe {
         $this->classe = $classe;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

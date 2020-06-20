@@ -14,7 +14,7 @@ class Eleve {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_eleve;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -57,13 +57,6 @@ class Eleve {
     private $url_photo;
 
 
-    /**
-     * Get the value of id_eleve
-     */ 
-    public function getId_eleve()
-    {
-        return $this->id_eleve;
-    }
 
     /**
      * Get the value of nom
@@ -223,5 +216,13 @@ class Eleve {
         $this->url_photo = $url_photo;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

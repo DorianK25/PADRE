@@ -14,7 +14,7 @@ class Competence {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_competence;
+    private $id;
 
 
     
@@ -37,14 +37,7 @@ class Competence {
 
     
 
-    /**
-     * Get the value of id_competence
-     */ 
-    public function getId_competence()
-    {
-        return $this->id_competence;
-    }
-
+  
     
 
     /**
@@ -105,5 +98,13 @@ class Competence {
         $this->capacite = $capacite;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

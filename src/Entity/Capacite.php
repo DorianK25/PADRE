@@ -12,9 +12,10 @@ class Capacite {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+
      * @ORM\Column(type="integer")
      */
-    private $id_capacite;
+    private $id;
 
 
 
@@ -50,13 +51,15 @@ class Capacite {
 
     
 
-    /**
-     * Get the value of id_capacite
-     */ 
-    public function getId_capacite()
-    {
-        return $this->id_capacite;
-    }
+    
 
     
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
 }

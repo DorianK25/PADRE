@@ -14,7 +14,7 @@ class Tp {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_tp;
+    private $id;
 
 
     
@@ -44,15 +44,6 @@ class Tp {
      */
     private $descriptif;
 
-    
-
-    /**
-     * Get the value of id_tp
-     */ 
-    public function getId_tp()
-    {
-        return $this->id_tp;
-    }
 
     /**
      * Get the value of nom_tp
@@ -152,5 +143,13 @@ class Tp {
         $this->descriptif = $descriptif;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }

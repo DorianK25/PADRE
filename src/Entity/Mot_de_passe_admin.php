@@ -14,7 +14,7 @@ class Mot_de_passe_admin {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id_mdp;
+    private $id;
 
 
     
@@ -29,13 +29,7 @@ class Mot_de_passe_admin {
 
     
 
-    /**
-     * Get the value of id_mdp
-     */ 
-    public function getId_mdp()
-    {
-        return $this->id_mdp;
-    }
+    
 
     /**
      * Get the value of mot_de_passe
@@ -55,5 +49,13 @@ class Mot_de_passe_admin {
         $this->mot_de_passe = $mot_de_passe;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }
