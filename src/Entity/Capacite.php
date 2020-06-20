@@ -26,15 +26,15 @@ class Capacite {
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $intutule;
+    private $intitule;
 
 
     /**
      * Get the value of intutule
      */ 
-    public function getIntutule()
+    public function getIntitule()
     {
-        return $this->intutule;
+        return $this->intitule;
     }
 
     /**
@@ -42,9 +42,9 @@ class Capacite {
      *
      * @return  self
      */ 
-    public function setIntutule($intutule)
+    public function setIntitule($intitule)
     {
-        $this->intutule = $intutule;
+        $this->intutule = $intitule;
 
         return $this;
     }

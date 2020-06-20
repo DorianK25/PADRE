@@ -3,6 +3,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Capacite;
+use App\Entity\Competence;
 use App\Form\ProfType;
 use App\Repository\CapaciteRepository;
 use App\Repository\CompetenceRepository;
@@ -28,15 +30,24 @@ class SourceController extends AbstractController
     {
 
         $tps=$tpsRepo->findAll();
-        $competences=$competencesRepo->findAll();
-        $capacites=$capacitesRepo->findAll();        
-        
+        $competences_=$competencesRepo->findBy([],["capacite"=>'ASC']);
+        $capacites_=$capacitesRepo->findAll();        
+        foreach($competences_ as $competence){
+            $competences[$competence->getCapacite()->getId()][]=$competence;
+
+        }
+        foreach($capacites_ as $capacite){
+            $capacites[$capacite->getId()][]=$capacite;
+
+        }
         dump($tps);
         dump($competences);
         dump($capacites);
 
         return $this->render('source/sourceIndex.html.twig', [
-            
+            "tps"=>$tps,
+            "capacites"=>$capacites,
+            "competences"=>$competences
         ]);
     }
 

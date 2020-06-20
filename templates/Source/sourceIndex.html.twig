@@ -1,7 +1,116 @@
 {% extends "base.html.twig" %}
+{% block script %}
+<script>
 
+$(document).ready(function(){
+
+   
+        
+        /*$(document).on("change","input",function(){
+            alert("cc");
+            console.log($(this).val());
+
+        });*/
+        {% for tp in tps %}
+                            
+            $(".spinner{{ tp.id }}").spinner({ min: 0, max: 20,spin: function (event, ui) {
+                        var somme=0;
+                        
+                        $(".spinner{{ tp.id }}").each(function(){
+                            somme+=parseInt($(this).val());
+                        });
+
+                        console.log(somme);
+
+                        if(somme==19){
+                            
+                            $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").toggle();
+                            });
+                            
+                        }else
+                            $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").show();
+                            });
+                        
+                        //"<a class='ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only' tabindex='-1' role='button' aria-disabled='true'><span class='ui-button-text'><span class='ui-icon ui-icon-triangle-1-n'>▲</span></span></a>"
+
+
+                    }
+            });
+                   
+                           
+        {% endfor %}
+        
+    
+    
+    
+    
+})
+    
+
+</script>
+
+
+{% endblock %}
 {% block body %}
+<body>
 
+
+    <table>
+        <tr>
+            <td rowspan="4">Capacite</td>
+            <td rowspan="4" colspan="2">Competence</td>
+       
+            <td>Domaine :</td>
+            {% for tp in tps %}
+                <td>{{ tp.domaine }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+           
+            <td>numero :</td>
+            {% for tp in tps %}
+                <td>{{ tp.numero }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            
+            <td>nom fichier :</td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_fichier }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Nom tp :</td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_tp }}</td>
+            {% endfor %}
+        </tr>
+
+        {% for capacite in capacites %}
+            <tr>
+                <td rowspan={{ competences[capacite[0].id]|length + 1 }}>{{ capacite[0].intitule }}</td>
+            </tr>
+            {% for competence in competences[capacite[0].id] %}
+                    <tr>
+                        <td>{{ competence.code_competence }}</td>
+                        <td>{{ competence.intitule }}</td>
+                        <td></td>
+                        {% for tp in tps %}
+                            
+                            
+                            <td><input id="spinner{{ tp.id }}{{ competence.id }}" class="spinner{{ tp.id }}" value="0" name="value" /></td>
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+            
+        {% endfor %}
+        
+    </table>
+
+
+</body>
 
 
 
@@ -10,9 +119,7 @@
 
 {% endblock %}
 
-{% block sctipt %}
 
-{% endblock %}
 
 {% block style %}
 
@@ -26,6 +133,9 @@
 
 }
 
+table, th, td {
+  border: 1px solid black;
+}
 
 
 
