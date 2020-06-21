@@ -7,6 +7,21 @@ function setbarem(id){
 
     console.log(id)
     $(".spinner"+id).each(function(){
+
+                            $.ajax({
+
+                                url: "{{path('source_create')}}",
+
+                                method: "POST",
+
+                                data: {"idTp":id,"idCompetence":$(this).attr("idCompetence"),"barem":$(this).val()},
+
+                                error: function(){
+                                    alert("une erreur est intervenu");
+                                }
+
+                            });
+                            
                             console.log($(this).val());
                             console.log($(this).attr("idCompetence"));
                         });
@@ -22,23 +37,23 @@ $(document).ready(function(){
 
         });*/
         {% for tp in tps %}
-            $("btn{{ tp.id }}").prop("disabled",true);               
-            $(".spinner{{ tp.id }}").spinner({ min: 0, max: 20,spin: function (event, ui) {
+            $("btn{{ tp.id }}").prop("disabled",true);
+                   
+
+            $(".spinner{{ tp.id }}").spinner({ min: 0, max: 20,stop: function (event, ui) {
                         var somme=0;
                         
                         $(".spinner{{ tp.id }}").each(function(){
                             somme+=parseInt($(this).val());
                         });
 
-                        console.log(somme);
-
-                        if(somme==19){
-                            
+                        
+                        
+                        if(somme==20){
                             $(".spinner{{ tp.id }}").each(function(){
-                                $(this).next(".ui-spinner-up").toggle();
+                                $(this).next(".ui-spinner-up").hide();
                                 $("#btn{{ tp.id }}").attr("disabled",false);
                             });
-                            
                         }else
                             $(".spinner{{ tp.id }}").each(function(){
                                 $(this).next(".ui-spinner-up").show();
@@ -49,6 +64,19 @@ $(document).ready(function(){
 
                     }
             });
+            var somme=0;
+            $(".spinner{{ tp.id }}").each(function(){
+                            
+                            somme+=parseInt($(this).val());
+                        });
+                        
+            if(somme==20){  
+                
+                $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").hide();
+                            });
+
+            }  
                    
                            
         {% endfor %}
@@ -110,8 +138,15 @@ $(document).ready(function(){
                         <td></td>
                         {% for tp in tps %}
                             
-                            
-                            <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="0" name="value" /></td>
+                            {% if competencesTp[competence.id][tp.id] is defined %}
+
+                                <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="{{ competencesTp[competence.id][tp.id][0].barem_competence }}" name="value" /></td>
+
+                            {% else %}
+
+                                <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="0" name="value" /></td>
+
+                            {% endif %}
                         {% endfor %}
                     </tr>
             {% endfor %}
