@@ -30,14 +30,14 @@ class tp_note {
     private $tp;
  
     /** 
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal",precision=2)
     */
     private $note;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Professeur")
      */
-    private $prof;
+    private $professeur;
     
 
 
@@ -101,25 +101,7 @@ class tp_note {
         return $this;
     }
 
-    /**
-     * Get the value of prof
-     */ 
-    public function getProf()
-    {
-        return $this->prof;
-    }
-
-    /**
-     * Set the value of prof
-     *
-     * @return  self
-     */ 
-    public function setProf($prof)
-    {
-        $this->prof = $prof;
-
-        return $this;
-    }
+    
 
     /**
      * Get the value of id
@@ -127,5 +109,25 @@ class tp_note {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of professeur
+     */ 
+    public function getProfesseur()
+    {
+        return $this->professeur;
+    }
+
+    /**
+     * Set the value of professeur
+     *
+     * @return  self
+     */ 
+    public function setProfesseur($professeur)
+    {
+        $this->professeur = $professeur;
+
+        return $this;
     }
 }

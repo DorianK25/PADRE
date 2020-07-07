@@ -30,12 +30,6 @@ class Professeur {
     private $Prenom;
 
 
-    public function __construct()
-    {
-        $this->Penom = "dorian";
-        $this->Nom = "keurinck";
-    }
-
     
 
     /**

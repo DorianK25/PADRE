@@ -1,0 +1,101 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div id="content">
+<h3>Evaluation de {{ eleve.nom }} {{ eleve.prenom }} :</h3>
+<h4>Tp :</h4>
+<p> {{ tp.nom_tp }}</p>
+<h4> descriptif :</h4>
+<p>  {{ tp.descriptif }}</p>
+<hr>
+<div id="conteneur">
+
+
+
+{{ form_start(form) }}
+
+ {{ form_widget(form) }}
+
+ <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
+
+{{ form_end(form) }}
+
+votre Note : <div id="noteFinale">0</div>/20
+
+</div>
+
+</div>
+{% endblock %}
+{% block style %}
+
+<style>
+
+#conteneur{
+
+    width:100%;
+    padding: 25px;
+    text-align: center;
+
+}
+input{
+    margin:5px;
+}
+
+h4{
+    margin:20px;
+}
+p{
+    margin:40px;
+}
+
+#note div div{
+    display:inline-block;
+}
+
+#content{
+    margin:15px;
+}
+#noteFinale{
+    display:inline-block;
+}
+
+</style>
+
+
+{% endblock %}
+{% block script %}
+<script>
+function precise(x) {
+  return Number.parseFloat(x).toFixed(2);
+}
+
+
+$(document).on("change","input[type=radio]",function () {
+
+    var barem=$(this).parent().prev().attr("barem");
+    var mult=$(this).val();
+    var note=barem/3;
+    note=note*mult;
+    
+    if($(this).parent().prev().attr("add")=="false"){
+       $(this).parent().prev().attr("note",note);
+       var noteActuel=parseFloat($("#noteFinale").html());
+       var noteFinale=noteActuel+note;
+       $(this).parent().prev().attr("add","true");
+    }else{
+        var noteActuel=parseFloat($("#noteFinale").html());
+        var noteFinale=noteActuel+note-parseFloat($(this).parent().prev().attr("note"));
+        $(this).parent().prev().attr("note",note);
+    }
+
+    if(noteFinale<0.33)
+        noteFinale=0;
+    if(noteFinale>20)
+        noteFinale=20;
+    $("#noteFinale").html(precise(noteFinale));
+    
+});
+
+
+</script>
+{% endblock %}

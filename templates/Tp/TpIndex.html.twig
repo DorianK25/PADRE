@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+<body>
+
+    <table>
+        <tr>
+            <td></td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_tp }}</td>
+            {% endfor %}
+        </tr>
+        {% for eleve in eleveParClasse[1] %}
+                <tr>
+                    <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
+                    {% for tp in tps %}
+                        <td>
+                            {% if note[eleve.id][tp.id] is defined %} 
+                                {{ note[eleve.id][tp.id].note }} / 20 <input class="btn btn-secondary" type="button" value="modifier" onclick="modifierNote({{ note[eleve.id][tp.id].id }})" />
+                            {% else %}
+                                <a class="btn btn-secondary" href="{{ path('tpAdd', {eleve: eleve.id, tp: tp.id}) }}" >évaluer</a>
+                            
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+        {% endfor %}
+    </table>
+
+</body>
+{% endblock %}
+
+
+{% block style %}
+
+<style>
+
+
+table, th, td {
+  border: 1px solid black;
+}
+
+td{
+    text-align:center;
+}
+
+</style>
+
+
+{% endblock %}
+
