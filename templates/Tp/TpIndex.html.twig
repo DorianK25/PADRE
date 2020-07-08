@@ -15,12 +15,9 @@
                 <tr>
                     <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
-                        <td>
+                        <td class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}">
                             {% if note[eleve.id][tp.id] is defined %} 
-                                {{ note[eleve.id][tp.id].note }} / 20 <input class="btn btn-secondary" type="button" value="modifier" onclick="modifierNote({{ note[eleve.id][tp.id].id }})" />
-                            {% else %}
-                                <a class="btn btn-secondary" href="{{ path('tpAdd', {eleve: eleve.id, tp: tp.id}) }}" >évaluer</a>
-                            
+                                {{ note[eleve.id][tp.id].note }} / 20 
                             {% endif %}
                         </td>
                     {% endfor %}
@@ -50,3 +47,17 @@ td{
 
 {% endblock %}
 
+
+{% block script %}
+
+<script>
+
+
+$(document).on("click",".case",function () {
+    console.log("cc");
+    document.location.href="/PADRE/public/Tp/add?eleve="+$(this).attr("eleve")+"&tp="+$(this).attr("tp");
+})
+
+
+</script>
+{% endblock %}

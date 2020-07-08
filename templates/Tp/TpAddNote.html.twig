@@ -2,7 +2,7 @@
 
 {% block body %}
 <div id="content">
-<h3>Evaluation de {{ eleve.nom }} {{ eleve.prenom }} :</h3>
+<h3>Evaluation de {{ eleve.nom }} {{ eleve.prenom }} : {% if noteBdd is not null %}(préalablement évalué par {{ noteBdd.professeur.nomComplet }}){% endif %}</h3>
 <h4>Tp :</h4>
 <p> {{ tp.nom_tp }}</p>
 <h4> descriptif :</h4>
@@ -20,7 +20,7 @@
 
 {{ form_end(form) }}
 
-votre Note : <div id="noteFinale">0</div>/20
+votre Note : <div id="noteFinale">{% if noteBdd is not null %}{{ noteBdd.note }}{% else %}0{% endif %}</div>/20
 
 </div>
 
@@ -73,17 +73,15 @@ function precise(x) {
 $(document).on("change","input[type=radio]",function () {
 
     var barem=$(this).parent().prev().attr("barem");
-    var mult=$(this).val();
+    var mult=$(this).val()-1;
     var note=barem/3;
     note=note*mult;
-    
-    if($(this).parent().prev().attr("add")=="false"){
+    var noteActuel=parseFloat($("#noteFinale").html());
+    if(noteActuel==0){
        $(this).parent().prev().attr("note",note);
-       var noteActuel=parseFloat($("#noteFinale").html());
        var noteFinale=noteActuel+note;
-       $(this).parent().prev().attr("add","true");
+       
     }else{
-        var noteActuel=parseFloat($("#noteFinale").html());
         var noteFinale=noteActuel+note-parseFloat($(this).parent().prev().attr("note"));
         $(this).parent().prev().attr("note",note);
     }

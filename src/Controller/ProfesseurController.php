@@ -29,6 +29,7 @@ class ProfesseurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
+            $request->getSession()->set("idProf",$form->getData()["prof"]->getId());
             $request->getSession()->set("Prof",$form->getData()["prof"]);
             return $this->redirectToRoute("main");
         

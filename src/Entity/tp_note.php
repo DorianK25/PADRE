@@ -16,9 +16,6 @@ class tp_note {
      */
     private $id;
 
-
-    
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Eleve")
      */
