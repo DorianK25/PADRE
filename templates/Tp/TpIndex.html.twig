@@ -3,7 +3,11 @@
 
 {% block body %}
 <body>
-
+<select>
+    {% for classe in classes %}
+        <option {% if classe.id == eleveParClasse[0].Classe.id %}selected{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
+    {% endfor %}
+</select>
     <table>
         <tr>
             <td></td>
@@ -11,13 +15,23 @@
                 <td>{{ tp.nom_tp }}</td>
             {% endfor %}
         </tr>
-        {% for eleve in eleveParClasse[1] %}
+        {% for eleve in eleveParClasse %}
                 <tr>
-                    <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
+                    <td class="eleve">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
-                        <td class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}">
-                            {% if note[eleve.id][tp.id] is defined %} 
-                                {{ note[eleve.id][tp.id].note }} / 20 
+                        <td class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
+                            {% if note[eleve.id][tp.id] is defined %}
+                                {% if note[eleve.id][tp.id].etat == "noté" %}
+                                    {{ note[eleve.id][tp.id].note }} / 20
+                                {% elseif note[eleve.id][tp.id].etat == "en-cours" %}
+                                    commencé le {{ note[eleve.id][tp.id].date|date("d/m/Y") }}
+                                {% elseif note[eleve.id][tp.id].etat == "terminé" %}
+                                    terminé le {{ note[eleve.id][tp.id].date|date("d/m/Y") }}
+                                {% elseif note[eleve.id][tp.id].etat == "abs" %}
+                                    absent le {{ note[eleve.id][tp.id].date|date("d/m/Y") }}
+                                {% endif %}
+                            {% else %}
+                                - 
                             {% endif %}
                         </td>
                     {% endfor %}
@@ -42,6 +56,12 @@ td{
     text-align:center;
 }
 
+table,select{
+    margin-top:15px;
+    margin-left:10px;
+}
+
+
 </style>
 
 
@@ -52,10 +72,51 @@ td{
 
 <script>
 
+$("select").change(function(){
+    document.location.href="/PADRE/public/Tp/index?classe="+$(this).val();
+});
 
 $(document).on("click",".case",function () {
-    console.log("cc");
-    document.location.href="/PADRE/public/Tp/add?eleve="+$(this).attr("eleve")+"&tp="+$(this).attr("tp");
+    var etat=$(this).attr("etat")
+    switch (etat) {
+        case 'terminé':
+            document.location.href="/PADRE/public/Tp/add?eleve="+$(this).attr("eleve")+"&tp="+$(this).attr("tp");
+        break;
+        case 'null':
+            var td=$(this);
+            $.ajax({
+
+                url: "{{path('tpbegin')}}",
+
+                data: {"eleve":$(this).attr("eleve"),"tp":$(this).attr("tp")},
+
+                success:function(orep){
+                    
+                    td.attr("etat","en-cours").html("commencé le "+orep.date);
+                    $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("commencé le "+orep.date);
+                }
+
+            });
+        break;
+        case 'en-cours':
+            var td=$(this);
+            $.ajax({
+
+                url: "{{path('tpend')}}",
+
+                data: {"eleve":$(this).attr("eleve"),"tp":$(this).attr("tp")},
+
+                success:function(orep){
+                    
+                    td.attr("etat","terminé").html("terminé le "+orep.date);
+                    $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("terminé le "+orep.date);
+                }
+                
+                });
+            
+        break;
+}
+    
 })
 
 

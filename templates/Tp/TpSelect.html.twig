@@ -1,0 +1,78 @@
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+<body>
+<select >
+    {% for classe in classes %}
+        <option {% if classe.id == eleveParClasse[0].Classe.id %}selected{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
+    {% endfor %}
+</select>
+    <table>
+        <tr>
+            <td></td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_tp }}</td>
+            {% endfor %}
+        </tr>
+        {% for eleve in eleveParClasse %}
+                <tr>
+                    <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
+                    {% for tp in tps %}
+                        <td>
+                            {% if note[eleve.id][tp.id] is defined %}
+                                {% if note[eleve.id][tp.id].etat == "noté" %}
+                                    {{ note[eleve.id][tp.id].note }} / 20
+                                {% else %}
+                                    - 
+                                {% endif %}
+                            {% else %}
+                                - 
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+        {% endfor %}
+    </table>
+
+</body>
+{% endblock %}
+
+
+{% block style %}
+
+<style>
+
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table,select{
+    margin-top:15px;
+    margin-left:10px;
+}
+
+
+
+td{
+    text-align:center;
+}
+
+</style>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+
+$("select").change(function(){
+    document.location.href="/PADRE/public/Tp/resume?classe="+$(this).val();
+});
+
+
+</script>
+{% endblock %}

@@ -32,7 +32,7 @@ class Eleve {
     private $date_naissance;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Eleve")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Eleve",fetch="EAGER")
      */
     private $binome;
 

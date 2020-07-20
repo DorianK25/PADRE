@@ -16,11 +16,12 @@
 
  {{ form_widget(form) }}
 
+    <div id="syntaxe">NA : Non-Acquis    |    EA : En cours d'Acquisition    |     A : Acquis    |      AM : Acquis Maitrisé</div>
  <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
 
 {{ form_end(form) }}
 
-votre Note : <div id="noteFinale">{% if noteBdd is not null %}{{ noteBdd.note }}{% else %}0{% endif %}</div>/20
+votre Note : <div id="noteFinale">{% if noteBdd is not null %}{% if noteBdd != "" %}0{% else %}{{ noteBdd.note }}{% endif %}{% else %}0{% endif %}</div>/20
 
 </div>
 
@@ -29,6 +30,27 @@ votre Note : <div id="noteFinale">{% if noteBdd is not null %}{{ noteBdd.note }}
 {% block style %}
 
 <style>
+
+.comp{
+    
+    margin-left:25px;
+}
+
+#note > div > div{
+    float: right;
+    margin-right:25%;
+    display:inline-block;
+}
+
+#syntaxe{
+
+    margin-top:15px;
+    margin-bottom:15px;
+    font-weight:bold;
+    
+}
+
+
 
 #conteneur{
 
@@ -48,9 +70,7 @@ p{
     margin:40px;
 }
 
-#note div div{
-    display:inline-block;
-}
+
 
 #content{
     margin:15px;

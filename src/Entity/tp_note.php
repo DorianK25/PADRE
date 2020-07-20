@@ -32,11 +32,19 @@ class tp_note {
     private $note;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Professeur")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Professeur",fetch="EAGER")
      */
     private $professeur;
     
+    /** 
+     * @ORM\Column(type="string")
+    */
+    private $etat;
 
+    /** 
+     * @ORM\Column(type="date")
+    */
+    private $date;
 
     /**
      * Get the value of eleve
@@ -124,6 +132,46 @@ class tp_note {
     public function setProfesseur($professeur)
     {
         $this->professeur = $professeur;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of etat
+     */ 
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set the value of etat
+     *
+     * @return  self
+     */ 
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date
+     */ 
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set the value of date
+     *
+     * @return  self
+     */ 
+    public function setDate($date)
+    {
+        $this->date = $date;
 
         return $this;
     }

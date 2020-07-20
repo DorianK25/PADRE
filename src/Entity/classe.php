@@ -25,7 +25,7 @@ class Classe {
     private $nom_classe;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $annee;
 
