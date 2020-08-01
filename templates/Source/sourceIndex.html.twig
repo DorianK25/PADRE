@@ -1,0 +1,199 @@
+{% extends "base.html.twig" %}
+{% block script %}
+<script>
+
+function setbarem(id){
+
+
+    console.log(id)
+    $(".spinner"+id).each(function(){
+
+                            $.ajax({
+
+                                url: "{{path('source_create')}}",
+
+                                method: "POST",
+
+                                data: {"idTp":id,"idCompetence":$(this).attr("idCompetence"),"barem":$(this).val()},
+
+                                error: function(){
+                                    alert("une erreur est intervenu");
+                                }
+
+                            });
+                            
+                            console.log($(this).val());
+                            console.log($(this).attr("idCompetence"));
+                        });
+}
+
+$(document).ready(function(){
+
+   
+        
+        /*$(document).on("change","input",function(){
+            alert("cc");
+            console.log($(this).val());
+
+        });*/
+        {% for tp in tps %}
+            $("btn{{ tp.id }}").prop("disabled",true);
+                   
+
+            $(".spinner{{ tp.id }}").spinner({ min: 0, max: 20,stop: function (event, ui) {
+                        var somme=0;
+                        
+                        $(".spinner{{ tp.id }}").each(function(){
+                            somme+=parseInt($(this).val());
+                        });
+
+                        
+                        
+                        if(somme==20){
+                            $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").hide();
+                                $("#btn{{ tp.id }}").attr("disabled",false);
+                            });
+                        }else
+                            $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").show();
+                                $("#btn{{ tp.id }}").attr("disabled",true);
+                            });
+                        
+                        
+
+                    }
+            });
+            var somme=0;
+            $(".spinner{{ tp.id }}").each(function(){
+                            
+                            somme+=parseInt($(this).val());
+                        });
+                        
+            if(somme==20){  
+                
+                $(".spinner{{ tp.id }}").each(function(){
+                                $(this).next(".ui-spinner-up").hide();
+                            });
+
+            }  
+                   
+                           
+        {% endfor %}
+        
+    
+    
+    
+    
+})
+    
+
+</script>
+
+
+{% endblock %}
+{% block body %}
+<body>
+
+
+    <table>
+        <tr>
+            <td rowspan="4">Capacite</td>
+            <td rowspan="4" colspan="2">Competence</td>
+       
+            <td>Domaine :</td>
+            {% for tp in tps %}
+                <td>{{ tp.domaine }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+           
+            <td>numero :</td>
+            {% for tp in tps %}
+                <td>{{ tp.numero }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            
+            <td>nom fichier :</td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_fichier }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Nom tp :</td>
+            {% for tp in tps %}
+                <td>{{ tp.nom_tp }}</td>
+            {% endfor %}
+        </tr>
+
+        {% for capacite in capacites %}
+            <tr>
+                <td rowspan={{ competences[capacite[0].id]|length + 1 }}>{{ capacite[0].intitule }}</td>
+            </tr>
+            {% for competence in competences[capacite[0].id] %}
+                    <tr>
+                        <td>{{ competence.code_competence }}</td>
+                        <td>{{ competence.intitule }}</td>
+                        <td></td>
+                        {% for tp in tps %}
+                            
+                            {% if competencesTp[competence.id][tp.id] is defined %}
+
+                                <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="{{ competencesTp[competence.id][tp.id][0].barem_competence }}" name="value" /></td>
+
+                            {% else %}
+
+                                <td><input id="spinner{{ tp.id }}{{ competence.id }}" idCompetence="{{ competence.id }}"  class="spinner{{ tp.id }}" value="0" name="value" /></td>
+
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+            
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {% for tp in tps %}
+            <td><input type="button" class="form btn btn-primary" id="btn{{ tp.id }}" disabled="true" onclick="setbarem({{ tp.id }})" value="valider" style="margin-left:50%;margin-right:50%"></td>
+            {% endfor %}
+        </tr>
+    </table>
+
+
+</body>
+
+
+
+
+ 
+
+{% endblock %}
+
+
+
+{% block style %}
+
+<style>
+
+#conteneur{
+
+    width:100%;
+    padding: 25px;
+    text-align: center;
+
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+
+
+</style>
+
+
+{% endblock %}
