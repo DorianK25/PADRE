@@ -89,6 +89,11 @@ function precise(x) {
   return Number.parseFloat(x).toFixed(2);
 }
 
+$("input[type='radio'][value='1']").next().attr("style","color:red");
+$("input[type='radio'][value='2']").next().attr("style","color:orange");
+$("input[type='radio'][value='3']").next().attr("style","color:#F0C300");
+$("input[type='radio'][value='4']").next().attr("style","color:green");
+
 
 $(document).on("change","input[type=radio]",function () {
 

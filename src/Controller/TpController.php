@@ -48,17 +48,30 @@ class TpController extends AbstractController
 
             
             $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("en-cours")->setDate(new DateTime());
-            $entityManager->merge($note);
+            $entityManager->persist($note);
         }
         else{
             $note=$noterepo->findOneBy(["eleve"=>$eleve,"tp"=>$tp]);
             $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("en-cours")->setDate(new DateTime());
         }
+
+        $eleve=$eleve->getBinome();
+        if(empty($noterepo->findBy(["eleve"=>$eleve,"tp"=>$tp]))){
+            $note_=new tp_note();
+
+            
+            $note_->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("en-cours")->setDate(new DateTime());
+            $entityManager->persist($note_);
+        }
+        else{
+            $note_=$noterepo->findOneBy(["eleve"=>$eleve,"tp"=>$tp]);
+            $note_->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("en-cours")->setDate(new DateTime());
+        }
             
         $entityManager->flush();
         
         $date = new DateTime;
-        $response= new JsonResponse(['date' => $date->format("d/m/Y"),"id" => $eleve->getBinome()->getId()]);
+        $response= new JsonResponse(['date' => $date->format("d/m/Y"),"id" => $eleve->getId()]);
         
         return $response;
 
@@ -77,13 +90,22 @@ class TpController extends AbstractController
         if(empty($noterepo->findBy(["eleve"=>$eleve,"tp"=>$tp]))){
             $note=new tp_note();
             $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("terminé")->setDate(new DateTime());
-            $entityManager->merge($note);
+            $entityManager->persist($note);
+        }else{
+            $note=$noterepo->findOneBy(["eleve"=>$eleve,"tp"=>$tp]);
+            $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("terminé")->setDate(new DateTime());
+        }
+        $eleve=$eleve->getBinome();
+        if(empty($noterepo->findBy(["eleve"=>$eleve,"tp"=>$tp]))){
+            $note=new tp_note();
+            $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("terminé")->setDate(new DateTime());
+            $entityManager->persist($note);
         }else{
             $note=$noterepo->findOneBy(["eleve"=>$eleve,"tp"=>$tp]);
             $note->setEleve($eleve)->setTp($tp)->setProfesseur($profRepo->find($request->getSession()->get("idProf")))->setEtat("terminé")->setDate(new DateTime());
         }
         $date = new DateTime;
-        $response= new JsonResponse(['date' => $date->format("d/m/Y"),"id" => $eleve->getBinome()->getId()]);
+        $response= new JsonResponse(['date' => $date->format("d/m/Y"),"id" => $eleve->getId()]);
         
         $entityManager->flush();
 

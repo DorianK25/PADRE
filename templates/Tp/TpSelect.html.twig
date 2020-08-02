@@ -17,7 +17,7 @@
         </tr>
         {% for eleve in eleveParClasse %}
                 <tr>
-                    <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
+                    <td class="eleve" eleve="{{ eleve.id }}">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
                         <td>
                             {% if note[eleve.id][tp.id] is defined %}
@@ -68,7 +68,11 @@ td{
 {% block script %}
 
 <script>
+$(document).on("click",".eleve",function () {
 
+    document.location.href="/PADRE/public/eleve/index?id="+$(this).attr("eleve");
+
+});
 $("select").change(function(){
     document.location.href="/PADRE/public/Tp/resume?classe="+$(this).val();
 });

@@ -17,7 +17,7 @@
         </tr>
         {% for eleve in eleveParClasse %}
                 <tr>
-                    <td class="eleve">{{ eleve.nom }} {{ eleve.prenom }}</td>
+                    <td class="eleve" eleve="{{ eleve.id }}">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
                         <td class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
                             {% if note[eleve.id][tp.id] is defined %}
@@ -74,6 +74,12 @@ table,select{
 
 $("select").change(function(){
     document.location.href="/PADRE/public/Tp/index?classe="+$(this).val();
+});
+
+$(document).on("click",".eleve",function () {
+
+    document.location.href="/PADRE/public/eleve/index?id="+$(this).attr("eleve");
+
 });
 
 $(document).on("click",".case",function () {
