@@ -17,7 +17,10 @@ class Groupe {
     private $id;
 
 
-    
+    public function __toString()
+    {
+        return $this->nom_groupe;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)

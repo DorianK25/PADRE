@@ -17,7 +17,10 @@ class Classe {
     private $id;
 
 
-    
+    public function __toString()
+    {
+        return $this->nom_classe;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)

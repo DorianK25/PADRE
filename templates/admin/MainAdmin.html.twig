@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div id="conteneur">
+<ul class="nav nav-tabs" id="menu" style="margin-top:30px" onload="lock()">
+  <li class="nav-item">
+    <a class="nav-link" id="Eleve" href="{{ path('admin_eleve',{ 'action': 'index' }) }}"><span data-feather="bell">
+        </span>Eleve</span>
+    </a>
+  </li>
+</ul>
+
+<div id="content">{% block content %}{% endblock %}</div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+  #menu{
+    font-size: 20px;
+  }
+  #content{
+    border: 0.1px solid #ecf0f1;
+    padding: 30px;
+  }
+  #conteneur{
+
+    width:100%;
+    padding: 25px;
+    text-align: center;
+
+}
+img{
+  max-width:30px
+}
+</style>
+{% endblock %}

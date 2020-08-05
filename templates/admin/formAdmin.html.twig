@@ -1,16 +1,36 @@
 {% extends "base.html.twig" %}
 {% block body %}
 <body>
-
+<div id="conteneur">
 {{ form_start(form) }}
-
- {{ form_widget(form.mdp) }}
-
+ <div class="form-group">
+    <label for="exampleInputEmail1">Mot de passe :</label>
+ {{ form_widget(form.mdp, {'attr': {'class': 'form-control'}}) }}
+</div>
+<button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}
-
+</div>
 </body>
 
 {% endblock %}
 
 
+{% block style %}
+
+<style>
+
+#conteneur{
+
+    width:100%;
+    padding: 25px;
+    text-align: center;
+
+}
+
+
+
+</style>
+
+
+{% endblock %}
 

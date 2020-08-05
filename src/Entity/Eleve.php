@@ -57,6 +57,10 @@ class Eleve {
     private $url_photo;
 
 
+    public function __toString()
+    {
+        return $this->nom." ".$this->prenom;
+    }
 
     /**
      * Get the value of nom
@@ -102,6 +106,14 @@ class Eleve {
      * Get the value of date_naissance
      */ 
     public function getDate_naissance()
+    {
+        return $this->date_naissance;
+    }
+
+    /**
+     * Get the value of date_naissance
+     */ 
+    public function getDateNaissance()
     {
         return $this->date_naissance;
     }
@@ -202,6 +214,14 @@ class Eleve {
      * Get the value of url_photo
      */ 
     public function getUrl_photo()
+    {
+        return $this->url_photo;
+    }
+
+    /**
+     * Get the value of url_photo
+     */ 
+    public function getUrlPhoto()
     {
         return $this->url_photo;
     }

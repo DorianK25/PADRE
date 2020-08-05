@@ -17,13 +17,13 @@ class EleveController extends AbstractController
 {
 
     /**
-     * @Route("/index", name="indexAdmin")
+     * @Route("/index", name="indexEleve")
      */
     public function index(Request $request,EleveRepository $eleveRepo)
     {
 
         $eleve=$eleveRepo->find($request->get("id"));
-        dump($eleve);
+        
         
         
     }
