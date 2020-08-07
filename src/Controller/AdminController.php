@@ -2,14 +2,33 @@
 
 namespace App\Controller;
 
+use App\Entity\Tp;
+use App\Form\TpType;
+use App\Entity\Eleve;
+use App\Entity\Classe;
+use App\Entity\Groupe;
 use App\Form\AdminType;
 use App\Form\EleveType;
+use App\Entity\Capacite;
+use App\Form\ClasseType;
+use App\Form\GroupeType;
+use App\Entity\Competence;
+use App\Entity\Professeur;
+use App\Form\CapaciteType;
+use App\Form\CompetenceType;
+use App\Form\ProfesseurType;
+use App\Repository\TpRepository;
 use App\Repository\EleveRepository;
-use App\Repository\Mot_de_passe_adminRepository;
+use App\Form\Mot_de_passe_adminType;
+use App\Repository\ClasseRepository;
+use App\Repository\GroupeRepository;
+use App\Repository\CapaciteRepository;
+use App\Repository\CompetenceRepository;
 use App\Repository\ProfesseurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\Mot_de_passe_adminRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -70,8 +89,19 @@ class AdminController extends AbstractController
             break;
 
             case "add":
-                $form=$this->createForm(EleveType::class);
-
+                $eleve=new Eleve();
+                
+                $form=$this->createForm(EleveType::class,$eleve);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $eleve=$form->getData();
+                    dump($eleve);
+                    $this->getDoctrine()->getManager()->persist($eleve);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_eleve',[
+                        "action"=>"index",
+                    ]);
+                }
                 return $this->render('admin/eleveAdmin.html.twig',[
                     "eleves"=>$eleves,
                     "form"=>$form->createView()
@@ -83,6 +113,13 @@ class AdminController extends AbstractController
                 $eleve=$eleveRepo->find($request->get("eleve"));
                 dump($eleve);
                 $form=$this->createForm(EleveType::class,$eleve);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_eleve',[
+                        "action"=>"index",
+                    ]);
+                }
                 return $this->render('admin/eleveAdmin.html.twig',[
                     "eleves"=>$eleves,
                     "form"=>$form->createView()
@@ -92,9 +129,10 @@ class AdminController extends AbstractController
             case "del":
 
                 $eleve=$eleveRepo->find($request->get("eleve"));
-                return $this->render('admin/eleveAdmin.html.twig',[
-                    "eleves"=>$eleves,
-                    
+                $this->getDoctrine()->getManager()->remove($eleve);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_eleve',[
+                    "action"=>"index",
                 ]);
             break;
 
@@ -106,5 +144,477 @@ class AdminController extends AbstractController
     }
 
    
+    /**
+     * @Route("/prof",name="admin_prof" )
+     */ 
+    public function ProfIndex(Request $request,ProfesseurRepository $professeurRepository){
+
+        $profs=$professeurRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/profAdmin.html.twig',[
+                    "profs"=>$profs,
+                ]);
+            break;
+
+            case "add":
+
+                $prof=new Professeur();
+                $form=$this->createForm(ProfesseurType::class,$prof);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $prof=$form->getData();
+                    $this->getDoctrine()->getManager()->persist($prof);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_prof',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/profAdmin.html.twig',[
+                    "profs"=>$profs,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $prof=$professeurRepository->find($request->get("prof"));
+                $form=$this->createForm(ProfesseurType::class,$prof);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $prof=$form->getData();
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_prof',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/profAdmin.html.twig',[
+                    "profs"=>$profs,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $prof=$professeurRepository->find($request->get("prof"));
+                $this->getDoctrine()->getManager()->remove($prof);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_prof',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/tp",name="admin_tp" )
+     */ 
+    public function TpIndex(Request $request,TpRepository $tpRepository){
+
+        $tps=$tpRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/tpAdmin.html.twig',[
+                    "tps"=>$tps,
+                ]);
+
+            break;
+
+            case "add":
+
+                $tp=new Tp();
+                $form=$this->createForm(TpType::class,$tp);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $tp=$form->getData();
+                    $this->getDoctrine()->getManager()->persist($tp);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_tp',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/tpAdmin.html.twig',[
+                    "tps"=>$tps,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $tp=$tpRepository->find($request->get("tp"));
+                $form=$this->createForm(TpType::class,$tp);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $prof=$form->getData();
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_tp',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/tpAdmin.html.twig',[
+                    "tps"=>$tps,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $tp=$tpRepository->find($request->get("tp"));
+                $this->getDoctrine()->getManager()->remove($tp);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_tp',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/Competence",name="admin_competence" )
+     */ 
+    public function CompetenceIndex(Request $request,CompetenceRepository $competenceRepository){
+
+        $competences=$competenceRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/competenceAdmin.html.twig',[
+                    "competences"=>$competences,
+                ]);
+
+            break;
+
+            case "add":
+
+                $competence=new Competence();
+                $form=$this->createForm(CompetenceType::class,$competence);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $competence=$form->getData();
+                    $this->getDoctrine()->getManager()->persist($competence);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_competence',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/competenceAdmin.html.twig',[
+                    "competences"=>$competences,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $competence=$competenceRepository->find($request->get("competence"));
+                $form=$this->createForm(CompetenceType::class,$competence);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_competence',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/competenceAdmin.html.twig',[
+                    "competences"=>$competences,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $competence=$competenceRepository->find($request->get("competence"));
+                $this->getDoctrine()->getManager()->remove($competence);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_competence',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/Capacite",name="admin_capacite" )
+     */ 
+    public function CapaciteIndex(Request $request,CapaciteRepository $capaciteRepository){
+
+        $capacites=$capaciteRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/capaciteAdmin.html.twig',[
+                    "capacites"=>$capacites,
+                ]);
+
+            break;
+
+            case "add":
+
+                $capacite=new Capacite();
+                $form=$this->createForm(CapaciteType::class,$capacite);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->persist($capacite);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_capacite',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/capaciteAdmin.html.twig',[
+                    "capacites"=>$capacites,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $capacite=$capaciteRepository->find($request->get("capacite"));
+                $form=$this->createForm(CapaciteType::class,$capacite);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_capacite',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/capaciteAdmin.html.twig',[
+                    "capacites"=>$capacites,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $capacite=$capaciteRepository->find($request->get("capacite"));
+                $this->getDoctrine()->getManager()->remove($capacite);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_capacite',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/Classe",name="admin_classe" )
+     */ 
+    public function ClasseIndex(Request $request,ClasseRepository $classeRepository){
+
+        $classes=$classeRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/classeAdmin.html.twig',[
+                    "classes"=>$classes,
+                ]);
+
+            break;
+
+            case "add":
+
+                $classe=new Classe();
+                $form=$this->createForm(ClasseType::class,$classe);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->persist($classe);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_classe',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/classeAdmin.html.twig',[
+                    "classes"=>$classes,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $classe=$classeRepository->find($request->get("classe"));
+                $form=$this->createForm(ClasseType::class,$classe);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_classe',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/classeAdmin.html.twig',[
+                    "classes"=>$classes,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $classe=$classeRepository->find($request->get("classe"));
+                $this->getDoctrine()->getManager()->remove($classe);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_classe',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+
+    /**
+     * @Route("/groupe",name="admin_groupe" )
+     */ 
+    public function GroupeIndex(Request $request,GroupeRepository $groupeRepository){
+
+        $groupes=$groupeRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/groupeAdmin.html.twig',[
+                    "groupes"=>$groupes,
+                ]);
+
+            break;
+
+            case "add":
+
+                $groupe=new Groupe();
+                $form=$this->createForm(GroupeType::class,$groupe);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->persist($groupe);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_groupe',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/groupeAdmin.html.twig',[
+                    "groupes"=>$groupes,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $groupe=$groupeRepository->find($request->get("groupe"));
+                $form=$this->createForm(GroupeType::class,$groupe);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_groupe',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/groupeAdmin.html.twig',[
+                    "groupes"=>$groupes,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $groupe=$groupeRepository->find($request->get("groupe"));
+                $this->getDoctrine()->getManager()->remove($groupe);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_groupe',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    
+    /**
+     * @Route("/password",name="admin_mdp" )
+     */ 
+    public function PasswordIndex(Request $request,Mot_de_passe_adminRepository $mot_de_passe_adminRepository){
+
+        $mdp=$mot_de_passe_adminRepository->find(1);
+        $form=$this->createForm(Mot_de_passe_adminType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            dump($form->getData());
+            if($form->getData()["mdp"]==$form->getData()["mdpV"])
+                $mdp->setMot_de_passe($form->getData()["mdp"]);
+                $this->getDoctrine()->getManager()->flush();
+        }
+        return $this->render('admin/mot_de_passeAdmin.html.twig',[
+            "form"=>$form->createView()
+        ]);
+    }
+
 
 }

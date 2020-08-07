@@ -42,11 +42,31 @@ class Groupe {
     }
 
     /**
+     * Get the value of nom_groupe
+     */ 
+    public function getNomGroupe()
+    {
+        return $this->nom_groupe;
+    }
+
+    /**
      * Set the value of nom_groupe
      *
      * @return  self
      */ 
     public function setNom_groupe($nom_groupe)
+    {
+        $this->nom_groupe = $nom_groupe;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of nom_groupe
+     *
+     * @return  self
+     */ 
+    public function setNomGroupe($nom_groupe)
     {
         $this->nom_groupe = $nom_groupe;
 

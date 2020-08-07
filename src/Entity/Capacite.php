@@ -44,14 +44,18 @@ class Capacite {
      */ 
     public function setIntitule($intitule)
     {
-        $this->intutule = $intitule;
+        $this->intitule = $intitule;
 
         return $this;
     }
 
     
 
-    
+    public function __toString()
+    {
+        return $this->intitule;
+    }
+
 
     
 

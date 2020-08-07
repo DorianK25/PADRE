@@ -46,11 +46,32 @@ class Classe {
     }
 
     /**
+     * Get the value of nom_classe
+     */ 
+    public function getNomClasse()
+    {
+        return $this->nom_classe;
+    }
+
+
+    /**
      * Set the value of nom_classe
      *
      * @return  self
      */ 
     public function setNom_classe($nom_classe)
+    {
+        $this->nom_classe = $nom_classe;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of nom_classe
+     *
+     * @return  self
+     */ 
+    public function setNomClasse($nom_classe)
     {
         $this->nom_classe = $nom_classe;
 

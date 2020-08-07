@@ -16,7 +16,8 @@ class ClasseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
-        $builder->add('nom_classe',TextType::class);
+        $builder->add('nom_classe',TextType::class)
+        ->add('annee',TextType::class);
         
     }
 }

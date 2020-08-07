@@ -19,7 +19,7 @@ class GroupeType extends AbstractType
         $builder->add('nom_groupe',TextType::class)
         ->add('classe',EntityType::class,[
 
-            "class"=>Capacite::class,
+            "class"=>Classe::class,
         ]);
         
     }

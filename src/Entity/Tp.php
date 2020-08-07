@@ -54,11 +54,30 @@ class Tp {
     }
 
     /**
+     * Get the value of nom_tp
+     */ 
+    public function getNomTp()
+    {
+        return $this->nom_tp;
+    }
+    /**
      * Set the value of nom_tp
      *
      * @return  self
      */ 
     public function setNom_tp($nom_tp)
+    {
+        $this->nom_tp = $nom_tp;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of nom_tp
+     *
+     * @return  self
+     */ 
+    public function setNomTp($nom_tp)
     {
         $this->nom_tp = $nom_tp;
 
@@ -114,11 +133,31 @@ class Tp {
     }
 
     /**
+     * Get the value of nom_fichier
+     */ 
+    public function getNomFichier()
+    {
+        return $this->nom_fichier;
+    }
+
+    /**
      * Set the value of nom_fichier
      *
      * @return  self
      */ 
     public function setNom_fichier($nom_fichier)
+    {
+        $this->nom_fichier = $nom_fichier;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of nom_fichier
+     *
+     * @return  self
+     */ 
+    public function setNomFichier($nom_fichier)
     {
         $this->nom_fichier = $nom_fichier;
 

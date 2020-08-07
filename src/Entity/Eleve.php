@@ -131,6 +131,18 @@ class Eleve {
     }
 
     /**
+     * Set the value of date_naissance
+     *
+     * @return  self
+     */ 
+    public function setDateNaissance($date_naissance)
+    {
+        $this->date_naissance = $date_naissance;
+
+        return $this;
+    }
+
+    /**
      * Get the value of binome
      */ 
     public function getBinome()
@@ -232,6 +244,18 @@ class Eleve {
      * @return  self
      */ 
     public function setUrl_photo($url_photo)
+    {
+        $this->url_photo = $url_photo;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of url_photo
+     *
+     * @return  self
+     */ 
+    public function setUrlPhoto($url_photo)
     {
         $this->url_photo = $url_photo;
 

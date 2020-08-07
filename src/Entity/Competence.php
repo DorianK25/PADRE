@@ -49,11 +49,31 @@ class Competence {
     }
 
     /**
+     * Get the value of code_competence
+     */ 
+    public function getcodeCompetence()
+    {
+        return $this->code_competence;
+    }
+
+    /**
      * Set the value of code_competence
      *
      * @return  self
      */ 
     public function setcode_competence($code_competence)
+    {
+        $this->code_competence = $code_competence;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of code_competence
+     *
+     * @return  self
+     */ 
+    public function setcodeCompetence($code_competence)
     {
         $this->code_competence = $code_competence;
 

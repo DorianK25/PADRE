@@ -1,0 +1,43 @@
+{% extends "admin/MainAdmin.html.twig" %}
+
+{% block content %}
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prof in profs %}
+        <tr>
+            <td>{{ prof.nom }}</td>
+            <td>{{ prof.prenom }}</td>
+            
+            <td><a href="{{ path('admin_prof',{ 'action': 'edit' , 'prof': prof.id }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_prof',{ 'action': 'del' , 'prof': prof.id }) }}"><i class="fa fa-trash" ></i></a></td>
+        </tr>    
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% if form is defined %}
+<hr>
+{{ form_start(form) }}
+
+    <div class="form-group">
+    <label for="exampleInputEmail1">Nom :</label>
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+    <label for="exampleInputEmail1">Prenom :</label>
+        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+<button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
+{{ form_end(form) }}
+</div>
+{% else %}
+<a class="btn tbn primary" href="{{ path('admin_prof',{ 'action': 'add' }) }}">Creer un nouveau Professeur</a>
+{% endif %}
+{% endblock %}

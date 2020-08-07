@@ -19,7 +19,7 @@ class TpType extends AbstractType
         
         $builder->add('nom_tp',TextType::class)
         ->add('domaine',TextType::class)
-        ->add('numero',IntegerType::class)
+        ->add('numero',TextType::class)
         ->add('nom_fichier',TextType::class)
         ->add('descriptif',TextType::class);
         
