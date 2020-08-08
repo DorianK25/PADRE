@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 22 juin 2020 à 17:22
+-- Généré le :  sam. 08 août 2020 à 07:38
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.1.26
 
@@ -21,6 +21,62 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `ltpnb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `acquisition`
+--
+
+DROP TABLE IF EXISTS `acquisition`;
+CREATE TABLE IF NOT EXISTS `acquisition` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `acquisition`
+--
+
+INSERT INTO `acquisition` (`id`, `nom`) VALUES
+(3, 'A'),
+(1, 'NA'),
+(2, 'EA'),
+(4, 'AM');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `acquisition_tp_eleve`
+--
+
+DROP TABLE IF EXISTS `acquisition_tp_eleve`;
+CREATE TABLE IF NOT EXISTS `acquisition_tp_eleve` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eleve_id` int(11) NOT NULL,
+  `competence_tp_id` int(11) NOT NULL,
+  `acquisition_id` int(11) NOT NULL,
+  `professeur_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `acquisition_tp_eleve`
+--
+
+INSERT INTO `acquisition_tp_eleve` (`id`, `eleve_id`, `competence_tp_id`, `acquisition_id`, `professeur_id`) VALUES
+(72, 2, 4, 1, 1),
+(71, 2, 3, 1, 1),
+(70, 2, 2, 1, 1),
+(69, 2, 1, 1, 1),
+(68, 1, 4, 1, 1),
+(67, 1, 3, 1, 1),
+(66, 1, 2, 1, 1),
+(65, 1, 1, 1, 1),
+(64, 1, 7, 4, 1),
+(63, 1, 6, 4, 1),
+(62, 1, 5, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -55,7 +111,15 @@ CREATE TABLE IF NOT EXISTS `classe` (
   `nom_classe` varchar(255) NOT NULL,
   `annee` year(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `classe`
+--
+
+INSERT INTO `classe` (`id`, `nom_classe`, `annee`) VALUES
+(1, 'LA1', 2021),
+(2, 'LA2', 2021);
 
 -- --------------------------------------------------------
 
@@ -130,11 +194,22 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   `binome_id` int(11) DEFAULT NULL,
   `groupe_id` int(11) DEFAULT NULL,
   `classe_id` int(11) DEFAULT NULL,
+  `couleur` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_ECA105F78D4924C4` (`binome_id`),
   KEY `IDX_ECA105F77A45358C` (`groupe_id`),
   KEY `IDX_ECA105F78F5EA509` (`classe_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `eleve`
+--
+
+INSERT INTO `eleve` (`id`, `nom`, `prenom`, `date_naissance`, `mail`, `url_photo`, `binome_id`, `groupe_id`, `classe_id`, `couleur`) VALUES
+(1, 'keurinck', 'dorian', '1999-09-25', 'dorian.keurinck@gmail.com', 'data.jpg', 2, 1, 1, ''),
+(2, 'branlant', 'theodorine', '2000-04-24', 'theodorine.branlant@gmail.com', 'data2.png', 1, 1, 1, ''),
+(3, 'barczyk', 'alexandre', '2020-01-30', 'fsdgsdfhgsd', 'shdfshfsfh', 4, 1, 2, ''),
+(4, 'perard', 'anschaire', '2020-08-27', 'srgdsqdfhs', 'dgs>gs', 3, 1, 2, '');
 
 -- --------------------------------------------------------
 
@@ -149,7 +224,14 @@ CREATE TABLE IF NOT EXISTS `groupe` (
   `classe_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_4B98C218F5EA509` (`classe_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `groupe`
+--
+
+INSERT INTO `groupe` (`id`, `nom_groupe`, `classe_id`) VALUES
+(1, 'A1', 1);
 
 -- --------------------------------------------------------
 
@@ -183,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `professeur` (
   `prenom` varchar(255) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `professeur`
@@ -208,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `tp` (
   `nom_fichier` varchar(255) NOT NULL,
   `descriptif` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `tp`
@@ -216,7 +298,8 @@ CREATE TABLE IF NOT EXISTS `tp` (
 
 INSERT INTO `tp` (`id`, `nom_tp`, `domaine`, `numero`, `nom_fichier`, `descriptif`) VALUES
 (1, 'exemple1', 'astro', 1, 'blabla.txt', 'sdoighoshgj'),
-(2, 'exmple2', 'bla', 2, 'osldgiqh.txt', 'zrfsghsfh');
+(2, 'exmple2', 'bla', 2, 'osldgiqh.txt', 'zrfsghsfh'),
+(3, 'dqfdqd', 'qddqgcq', 3, 'qdgqchsc', 'qhgfchchc');
 
 -- --------------------------------------------------------
 
@@ -227,15 +310,27 @@ INSERT INTO `tp` (`id`, `nom_tp`, `domaine`, `numero`, `nom_fichier`, `descripti
 DROP TABLE IF EXISTS `tp_note`;
 CREATE TABLE IF NOT EXISTS `tp_note` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `note` int(11) NOT NULL,
+  `note` decimal(4,2) DEFAULT NULL,
   `eleve_id` int(11) DEFAULT NULL,
   `tp_id` int(11) DEFAULT NULL,
-  `prof_id` int(11) DEFAULT NULL,
+  `professeur_id` int(11) DEFAULT NULL,
+  `etat` varchar(250) NOT NULL,
+  `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_DAD35B95A6CC7B2` (`eleve_id`),
   KEY `IDX_DAD35B95384F0DAC` (`tp_id`),
-  KEY `IDX_DAD35B95ABC1F7FE` (`prof_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  KEY `IDX_DAD35B95ABC1F7FE` (`professeur_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `tp_note`
+--
+
+INSERT INTO `tp_note` (`id`, `note`, `eleve_id`, `tp_id`, `professeur_id`, `etat`, `date`) VALUES
+(51, '0.00', 1, 1, 1, 'noté', '2020-08-07'),
+(52, '0.00', 2, 1, 1, 'noté', '2020-08-07'),
+(50, NULL, 2, 2, 1, 'abs', '2020-07-28'),
+(49, '20.00', 1, 2, 1, 'noté', '2020-07-28');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
