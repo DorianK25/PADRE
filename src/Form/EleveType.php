@@ -20,7 +20,9 @@ class EleveType extends AbstractType
         
         $builder->add('nom',TextType::class)
         ->add('prenom',TextType::class)
-        ->add('date_naissance',DateType::class)
+        ->add('date_naissance',DateType::class,[
+            'years' => $this->buildYearChoices()
+        ])
         ->add('binome',EntityType::class,[
             "class"=>Eleve::class,
         ])
@@ -34,5 +36,21 @@ class EleveType extends AbstractType
         ->add('url_photo',FileType::class,[
             "data_class"=>null
         ]);
+    }
+
+    public function buildYearChoices()
+    {
+        $first = new \DateTime('01/01/1950');
+        $now = new \DateTime();
+        $years = array();
+        $years[0] = $first->format('Y');
+        $i = 1;
+        $oneYear = new \DateInterval('P1Y');
+        while($first->format('Y') != $now->format('Y')) {
+            $first->add($oneYear);
+            $years[$i] = $first->format('Y');
+            $i++;
+        }
+        return array_combine($years, $years);
     }
 }
