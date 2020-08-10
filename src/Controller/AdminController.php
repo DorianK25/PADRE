@@ -224,7 +224,7 @@ class AdminController extends AbstractController
      */ 
     public function TpIndex(Request $request,TpRepository $tpRepository){
 
-        $tps=$tpRepository->findAll();
+        $tps=$tpRepository->findBy([],array('numero' => 'ASC'));
 
         $action=$request->get("action");
 

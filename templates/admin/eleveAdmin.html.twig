@@ -22,11 +22,11 @@
             <td>{{ eleve.nom }}</td>
             <td>{{ eleve.prenom }}</td>
             <td>{{ eleve.date_naissance | date("d/m/Y") }}</td>
-            <td>{{ eleve.binome.nom }} {{ eleve.binome.prenom }}</td>
-            <td>{{ eleve.groupe.nom_groupe }}</td>
-            <td>{{ eleve.classe.nom_classe }}</td>
+            <td>{% if eleve.binome %}{{ eleve.binome.nom }} {{ eleve.binome.prenom }}{% endif %}</td>
+            <td>{% if eleve.groupe %}{{ eleve.groupe.nom_groupe }}{% endif %}</td>
+            <td>{% if eleve.classe %}{{ eleve.classe.nom_classe }}{% endif %}</td>
             <td>{{ eleve.mail }}</td>
-            <td><img src="/PADRE/src/img/{{ eleve.url_photo }}"/></td>
+            <td><img src="http://192.168.1.42/PADRE/src/img/{{ eleve.url_photo }}"/></td>
             <td><a href="{{ path('admin_eleve',{ 'action': 'edit' , 'eleve': eleve.id }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_eleve',{ 'action': 'del' , 'eleve': eleve.id }) }}"><i class="fa fa-trash" ></i></a></td>
         </tr>    
         {% endfor %}
