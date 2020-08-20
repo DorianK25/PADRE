@@ -8,6 +8,7 @@ use App\Entity\Groupe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,25 +18,37 @@ class EleveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        dump($options);
         
         $builder->add('nom',TextType::class)
         ->add('prenom',TextType::class)
         ->add('date_naissance',DateType::class,[
-            'years' => $this->buildYearChoices()
+            'years' => $this->buildYearChoices(),
+            'required'=>false
         ])
         ->add('binome',EntityType::class,[
             "class"=>Eleve::class,
+            "data"=>$options["data"]->getBinome(),
+            'required'=>false
         ])
         ->add('groupe',EntityType::class,[
             "class"=>Groupe::class,
+            "data"=>$options["data"]->getGroupe(),
+            'required'=>false
         ])
         ->add('classe',EntityType::class,[
             "class"=>Classe::class,
+            'required'=>false
         ])
-        ->add('mail',TextType::class)
+        ->add('mail',TextType::class,[
+            'required'=>false
+        ])
         ->add('url_photo',FileType::class,[
-            "data_class"=>null
-        ]);
+            "data_class"=>null,
+            "empty_data"=>$options["data"]->getUrl_photo(),
+            'required'=>false
+        ])
+        ->add('couleur',ColorType::class);
     }
 
     public function buildYearChoices()

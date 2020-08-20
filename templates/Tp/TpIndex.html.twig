@@ -3,10 +3,21 @@
 
 {% block body %}
 <body>
-<select>
+<select id="classe">
+    
     {% for classe in classes %}
-        <option {% if classe.id == eleveParClasse[0].Classe.id %}selected{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
+        <option {% if eleveParClasse is empty %}
+    {% else %}{% if classe.id == eleveParClasse[0].Classe.id %}selected{% endif %}{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
     {% endfor %}
+    
+</select>
+<select id="niveau">
+    
+    {% for niveau in niveaux %}
+        <option {% if tps is empty %}
+    {% else %}{% if niveau.id == tps[0].niveau.id %}selected{% endif %}{% endif %} value="{{ niveau.id }}">{{ niveau.nom }}</option>
+    {% endfor %}
+    
 </select>
     <table>
         <tr>
@@ -72,13 +83,17 @@ table,select{
 
 <script>
 
-$("select").change(function(){
-    document.location.href="/PADRE/public/Tp/index?classe="+$(this).val();
+$("#classe").change(function(){
+    document.location.href="/PADRE/public/Tp/index?classe="+$(this).val()+"&niveau="+$("#niveau").val();
+});
+$("#niveau").change(function(){
+    document.location.href="/PADRE/public/Tp/index?classe="+$("#classe").val()+"&niveau="+$(this).val();
 });
 
 $(document).on("click",".eleve",function () {
 
-    document.location.href="/PADRE/public/eleve/index?id="+$(this).attr("eleve");
+    document.location.href="/PADRE/public/eleve/index?id="+$(this).attr("eleve")+"&niveau="+$("#niveau").val();
+
 
 });
 

@@ -29,8 +29,8 @@ class SourceController extends AbstractController
     public function index(Request $request,CapaciteRepository $capacitesRepo,CompetenceRepository $competencesRepo,TpRepository $tpsRepo,Competence_tpRepository $compTpRepo): Response
     {
 
-        $tps=$tpsRepo->findAll();
-        $competences_=$competencesRepo->findBy([],["capacite"=>'ASC']);
+        $tps=$tpsRepo->findBy([],array('numero' => 'ASC'));
+        $competences_=$competencesRepo->findBy([],["capacite"=>'ASC',"code_competence"=>"ASC"]);
         $capacites_=$capacitesRepo->findAll();
         $competencesTp_=$compTpRepo->findAll();
         foreach($competencesTp_ as $competenceTp){
@@ -45,13 +45,16 @@ class SourceController extends AbstractController
             $capacites[$capacite->getId()][]=$capacite;
 
         }
+        $tpA=$tps;
+        if($request->get("num")!=null)
+            $tps=$tpsRepo->findBy(["numero"=>$request->get("num")],array('numero' => 'ASC'));
         
-
         return $this->render('source/sourceIndex.html.twig', [
             "tps"=>$tps,
             "capacites"=>$capacites,
             "competences"=>$competences,
-            "competencesTp"=>$competencesTp
+            "competencesTp"=>$competencesTp,
+            "tpA"=>$tpA
         ]);
     }
     /**

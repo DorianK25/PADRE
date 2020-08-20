@@ -15,6 +15,7 @@ use App\Repository\tp_noteRepository;
 use App\Repository\ProfesseurRepository;
 use App\Repository\AcquisitionRepository;
 use App\Repository\Competence_tpRepository;
+use App\Repository\NiveauRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -118,12 +119,19 @@ class TpController extends AbstractController
      *
      * 
      */
-    public function resume (Request $request,ClasseRepository $classeRepository,TpRepository $tpsRepo,EleveRepository $eleveRepo,tp_noteRepository $tp_noteRepository,Competence_tpRepository $compTpRepo){
+    public function resume (Request $request,NiveauRepository $niveauRepo,ClasseRepository $classeRepository,TpRepository $tpsRepo,EleveRepository $eleveRepo,tp_noteRepository $tp_noteRepository,Competence_tpRepository $compTpRepo){
 
-        $tps=$tpsRepo->findAll();
         $notesbis=$tp_noteRepository->findAll();
         $classes=$classeRepository->findAll();
         $classe=$request->get("classe");
+        $niveau=$request->get("niveau");
+        if($niveau == null){
+            $niveau=$niveauRepo->findOneBy([],array('id' => 'ASC'));
+            
+            
+        }
+        
+        $tps=$tpsRepo->findBy(["niveau"=>$niveau],array('numero' => 'ASC'));
         if($classe == null){
             $classe=$classes[0];
         }
@@ -147,7 +155,8 @@ class TpController extends AbstractController
             "tps"=>$tps,
             "note"=>$note,
             "eleveParClasse"=>$eleveParClasse,
-            "classes"=>$classes
+            "classes"=>$classes,
+            "niveaux"=>$niveauRepo->findAll()
         ]);
 
     }
@@ -157,12 +166,19 @@ class TpController extends AbstractController
      *
      * 
      */
-    public function index(Request $request,ClasseRepository $classeRepository,TpRepository $tpsRepo,EleveRepository $eleveRepo,tp_noteRepository $tp_noteRepository,Competence_tpRepository $compTpRepo){
+    public function index(Request $request,NiveauRepository $niveauRepo,ClasseRepository $classeRepository,TpRepository $tpsRepo,EleveRepository $eleveRepo,tp_noteRepository $tp_noteRepository,Competence_tpRepository $compTpRepo){
 
-        $tps=$tpsRepo->findAll();
+        
         $notesbis=$tp_noteRepository->findAll();
         $classes=$classeRepository->findAll();
         $classe=$request->get("classe");
+        $niveau=$request->get("niveau");
+        if($niveau == null){
+            $niveau=$niveauRepo->findOneBy([],array('id' => 'ASC'));
+            
+            
+        }
+        $tps=$tpsRepo->findBy(["niveau"=>$niveau],array('numero' => 'ASC'));
         if($classe == null){
             $classe=$classes[0];
         }
@@ -181,12 +197,12 @@ class TpController extends AbstractController
 
         }
 
-        
         return $this->render('Tp/TpIndex.html.twig', [
             "tps"=>$tps,
             "note"=>$note,
             "eleveParClasse"=>$eleveParClasse,
-            "classes"=>$classes
+            "classes"=>$classes,
+            "niveaux"=>$niveauRepo->findAll()
         ]);
 
     }

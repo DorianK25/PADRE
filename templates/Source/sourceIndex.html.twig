@@ -2,6 +2,8 @@
 {% block script %}
 <script>
 
+
+
 function setbarem(id){
 
 
@@ -29,7 +31,7 @@ function setbarem(id){
 
 $(document).ready(function(){
 
-   
+
         
         /*$(document).on("change","input",function(){
             alert("cc");
@@ -85,9 +87,11 @@ $(document).ready(function(){
     
     
     
-})
+});
     
-
+$('select').change(function(){
+    document.location.href="/PADRE/public/Source/index?num="+$(this).val()
+});
 </script>
 
 
@@ -95,46 +99,54 @@ $(document).ready(function(){
 {% block body %}
 <body>
 
+    <select id='number'>
+        <option selected></option>
+        {% for tp in tpA %}
+            <option value="{{ tp.numero }}">{{ tp.numero }}</option>
+        {% endfor %}
+    </select>
 
-    <table>
+    <table class="table table-striped">
+        <thead>
         <tr>
-            <td rowspan="4">Capacite</td>
-            <td rowspan="4" colspan="2">Competence</td>
+            <th rowspan="4">Capacite</th>
+            <th rowspan="4" colspan="2">Competence</th>
        
-            <td>Domaine :</td>
+            <th>Domaine :</th>
             {% for tp in tps %}
-                <td>{{ tp.domaine }}</td>
+                <th scope="col">{{ tp.domaine }}</th>
             {% endfor %}
         </tr>
         <tr>
            
-            <td>numero :</td>
+            <th>numero :</th>
             {% for tp in tps %}
-                <td>{{ tp.numero }}</td>
+                <th scope="col">{{ tp.numero }}</th>
             {% endfor %}
         </tr>
         <tr>
             
-            <td>nom fichier :</td>
+            <th>nom fichier :</th>
             {% for tp in tps %}
-                <td>{{ tp.nom_fichier }}</td>
+                <th scope="col">{{ tp.nom_fichier }}</th>
             {% endfor %}
         </tr>
         <tr>
-            <td>Nom tp :</td>
+            <th>Nom tp :</td>
             {% for tp in tps %}
-                <td>{{ tp.nom_tp }}</td>
+                <th scope="col">{{ tp.nom_tp }}</th>
             {% endfor %}
         </tr>
-
+        </thead>
+        
         {% for capacite in capacites %}
             <tr>
-                <td rowspan={{ competences[capacite[0].id]|length + 1 }}>{{ capacite[0].intitule }}</td>
+                <th rowspan={{ competences[capacite[0].id]|length + 1 }} scope="row" >{{ capacite[0].intitule }}</th>
             </tr>
             {% for competence in competences[capacite[0].id] %}
                     <tr>
-                        <td>{{ competence.code_competence }}</td>
-                        <td>{{ competence.intitule }}</td>
+                        <th scope="row">{{ competence.code_competence }}</th>
+                        <th scope="row">{{ competence.intitule }}</th>
                         <td></td>
                         {% for tp in tps %}
                             
@@ -189,8 +201,11 @@ $(document).ready(function(){
 
 table, th, td {
   border: 1px solid black;
+  
 }
-
+th{
+    table-layout: fixed; 
+}
 
 
 </style>

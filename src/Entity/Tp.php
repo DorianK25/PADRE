@@ -44,6 +44,10 @@ class Tp {
      */
     private $descriptif;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Niveau")
+     */
+    private $niveau;
 
     /**
      * Get the value of nom_tp
@@ -190,5 +194,25 @@ class Tp {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of niveau
+     */ 
+    public function getNiveau()
+    {
+        return $this->niveau;
+    }
+
+    /**
+     * Set the value of niveau
+     *
+     * @return  self
+     */ 
+    public function setNiveau($niveau)
+    {
+        $this->niveau = $niveau;
+
+        return $this;
     }
 }

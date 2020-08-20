@@ -13,6 +13,7 @@ use App\Entity\Capacite;
 use App\Form\ClasseType;
 use App\Form\GroupeType;
 use App\Entity\Competence;
+use App\Entity\Niveau;
 use App\Entity\Professeur;
 use App\Form\CapaciteType;
 use App\Form\CompetenceType;
@@ -20,6 +21,7 @@ use App\Form\ProfesseurType;
 use App\Repository\TpRepository;
 use App\Repository\EleveRepository;
 use App\Form\Mot_de_passe_adminType;
+use App\Form\NiveauType;
 use App\Repository\ClasseRepository;
 use App\Repository\GroupeRepository;
 use App\Repository\CapaciteRepository;
@@ -29,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\Mot_de_passe_adminRepository;
+use App\Repository\NiveauRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -72,7 +75,7 @@ class AdminController extends AbstractController
      */ 
     public function eleveIndex(Request $request,EleveRepository $eleveRepo){
 
-        $eleves=$eleveRepo->findAll(array('classe' => 'ASC'));
+        $eleves=$eleveRepo->findBy([],array('classe' => 'ASC'));
 
         $action=$request->get("action");
 
@@ -95,7 +98,8 @@ class AdminController extends AbstractController
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
                     $eleve=$form->getData();
-                    dump($eleve);
+                    $eleve->setBinome($eleve);
+                    $eleve->setUrl_photo($eleve->getUrl_photo()->getClientOriginalName());
                     $this->getDoctrine()->getManager()->persist($eleve);
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_eleve',[
@@ -115,8 +119,20 @@ class AdminController extends AbstractController
                 $form=$this->createForm(EleveType::class,$eleve);
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
+                    if($eleve->getBinome()->getClasse()==$eleve->getClasse()){
+                        $binome=$eleveRepo->findOneBy(["binome"=>$eleve]);
+                        if($binome!=$eleve)
+                            $binome->setBinome($binome);
+                        $eleve->getBinome()->setBinome($eleve);
+                    }else {
+                        $eleve->setBinome($eleve);
+                        $eleve->getBinome()->setBinome($eleve->getBinome());
+                    }
+                    if(!is_string($eleve->getUrl_photo()) && $eleve->getUrl_photo()!=null)
+                        $eleve->setUrl_photo($eleve->getUrl_photo()->getClientOriginalName());
+
                     $this->getDoctrine()->getManager()->flush();
-                    return $this->redirectToRoute('admin_eleve',[
+                     return $this->redirectToRoute('admin_eleve',[
                         "action"=>"index",
                     ]);
                 }
@@ -614,6 +630,82 @@ class AdminController extends AbstractController
         return $this->render('admin/mot_de_passeAdmin.html.twig',[
             "form"=>$form->createView()
         ]);
+    }
+
+
+    /**
+     * @Route("/Niveau",name="admin_niveau" )
+     */ 
+    public function NiveauIndex(Request $request,NiveauRepository $niveauRepository){
+
+        $niveaux=$niveauRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/niveauAdmin.html.twig',[
+                    "niveaux"=>$niveaux,
+                ]);
+
+            break;
+
+            case "add":
+
+                $niveau=new Niveau();
+                $form=$this->createForm(NiveauType::class,$niveau);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $this->getDoctrine()->getManager()->persist($niveau);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_niveau',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/niveauAdmin.html.twig',[
+                    "niveaux"=>$niveaux,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $niveau=$niveauRepository->find($request->get("niveau"));
+                $form=$this->createForm(NiveauType::class,$niveau);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_niveau',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/niveauAdmin.html.twig',[
+                    "niveaux"=>$niveaux,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $niveau=$niveauRepository->find($request->get("niveau"));
+                $this->getDoctrine()->getManager()->remove($niveau);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_niveau',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
     }
 
 
