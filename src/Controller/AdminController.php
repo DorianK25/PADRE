@@ -7,31 +7,37 @@ use App\Form\TpType;
 use App\Entity\Eleve;
 use App\Entity\Classe;
 use App\Entity\Groupe;
+use App\Entity\Niveau;
 use App\Form\AdminType;
 use App\Form\EleveType;
 use App\Entity\Capacite;
+use App\Entity\Planning;
 use App\Form\ClasseType;
 use App\Form\GroupeType;
+use App\Form\NiveauType;
 use App\Entity\Competence;
-use App\Entity\Niveau;
 use App\Entity\Professeur;
 use App\Form\CapaciteType;
+use App\Form\PlanningType;
 use App\Form\CompetenceType;
 use App\Form\ProfesseurType;
+use App\Entity\Planning_eleve;
+use App\Form\Planning_eleveType;
 use App\Repository\TpRepository;
 use App\Repository\EleveRepository;
 use App\Form\Mot_de_passe_adminType;
-use App\Form\NiveauType;
 use App\Repository\ClasseRepository;
 use App\Repository\GroupeRepository;
+use App\Repository\NiveauRepository;
 use App\Repository\CapaciteRepository;
+use App\Repository\PlanningRepository;
 use App\Repository\CompetenceRepository;
 use App\Repository\ProfesseurRepository;
+use App\Repository\Planning_eleveRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\Mot_de_passe_adminRepository;
-use App\Repository\NiveauRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -121,9 +127,11 @@ class AdminController extends AbstractController
                 if($form->isSubmitted() && $form->isValid()){
                     if($eleve->getBinome()->getClasse()==$eleve->getClasse()){
                         $binome=$eleveRepo->findOneBy(["binome"=>$eleve]);
-                        if($binome!=$eleve)
-                            $binome->setBinome($binome);
+                        if($binome!=null)
+                            if($binome!=$eleve)
+                                $binome->setBinome($binome);
                         $eleve->getBinome()->setBinome($eleve);
+                        $eleve->getBinome()->setCouleur($eleve->getCouleur());
                     }else {
                         $eleve->setBinome($eleve);
                         $eleve->getBinome()->setBinome($eleve->getBinome());
@@ -224,6 +232,156 @@ class AdminController extends AbstractController
                 $this->getDoctrine()->getManager()->remove($prof);
                 $this->getDoctrine()->getManager()->flush();
                 return $this->redirectToRoute('admin_prof',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/planning",name="admin_planning" )
+     */ 
+    public function PlanningIndex(Request $request,PlanningRepository $planningRepository){
+
+        $plannings=$planningRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/planningAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                ]);
+            break;
+
+            case "add":
+
+                $planning=new Planning();
+                $form=$this->createForm(planningType::class,$planning);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $planning=$form->getData();
+                    $this->getDoctrine()->getManager()->persist($planning);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_prof',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/planningAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $planning=$planningRepository->find($request->get("planning"));
+                $form=$this->createForm(PlanningType::class,$planning);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $planning=$form->getData();
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_prof',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/planningAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $planning=$planningRepository->find($request->get("planning"));
+                $this->getDoctrine()->getManager()->remove($planning);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_planning',[
+                    "action"=>"index",
+                ]);
+            break;
+
+
+        }
+
+
+       
+    }
+
+    /**
+     * @Route("/planning_eleve",name="admin_planning_eleve" )
+     */ 
+    public function Planning_eleveIndex(Request $request,Planning_eleveRepository $planning_eleveRepository){
+
+        $plannings=$planning_eleveRepository->findAll();
+
+        $action=$request->get("action");
+
+        
+
+        switch($action){
+
+            case "index" :
+
+
+                return $this->render('admin/planning_eleveAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                ]);
+            break;
+
+            case "add":
+
+                $planning_eleve=new Planning_eleve();
+                $form=$this->createForm(Planning_eleveType::class,$planning_eleve);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $planning_eleve=$form->getData();
+                    $this->getDoctrine()->getManager()->persist($planning_eleve);
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_planning_eleve',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/planning_eleveAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "edit":
+
+                $planning_eleve=$planning_eleveRepository->find($request->get("planning_eleve"));
+                $form=$this->createForm(planning_eleveType::class,$planning_eleve);
+                $form->handleRequest($request);
+                if($form->isSubmitted() && $form->isValid()){
+                    $planning_eleve=$form->getData();
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_planning_eleve',[
+                        "action"=>"index",
+                    ]);
+                }
+                return $this->render('admin/planning_eleveAdmin.html.twig',[
+                    "plannings"=>$plannings,
+                    "form"=>$form->createView()
+                ]);
+            break;
+
+            case "del":
+
+                $planning_eleve=$planning_eleveRepository->find($request->get("planning_eleve"));
+                $this->getDoctrine()->getManager()->remove($planning_eleve);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('admin_planning_eleve',[
                     "action"=>"index",
                 ]);
             break;

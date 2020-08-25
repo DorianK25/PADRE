@@ -30,7 +30,7 @@
                 <tr>
                     <td class="eleve" eleve="{{ eleve.id }}">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
-                        <td class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
+                        <td {% if note[eleve.id][tp.id] is defined %}{% else %}data-target="#exampleModal" data-toggle="modal"{% endif %} class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
                             {% if note[eleve.id][tp.id] is defined %}
                                 {% if note[eleve.id][tp.id].etat == "noté" %}
                                     {{ note[eleve.id][tp.id].note }} / 20
@@ -49,7 +49,22 @@
                 </tr>
         {% endfor %}
     </table>
-
+<div id="exampleModal" class="modal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Binome Absent :</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button abs="oui" class="close" type="button" data-dismiss="modal" class="btn btn-secondary">Oui</button>
+        <button abs="non" class="close" type="button" data-dismiss="modal" class="btn btn-primary">Non</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 {% endblock %}
 
@@ -82,7 +97,6 @@ table,select{
 {% block script %}
 
 <script>
-
 $("#classe").change(function(){
     document.location.href="/PADRE/public/Tp/index?classe="+$(this).val()+"&niveau="+$("#niveau").val();
 });
@@ -98,25 +112,41 @@ $(document).on("click",".eleve",function () {
 });
 
 $(document).on("click",".case",function () {
-    var etat=$(this).attr("etat")
+    
+
+    var etat=$(this).attr("etat");
+    
     switch (etat) {
         case 'terminé':
             document.location.href="/PADRE/public/Tp/add?eleve="+$(this).attr("eleve")+"&tp="+$(this).attr("tp");
         break;
+
+        case 'noté':
+            document.location.href="/PADRE/public/Tp/add?eleve="+$(this).attr("eleve")+"&tp="+$(this).attr("tp");
+        break;
+
         case 'null':
             var td=$(this);
-            $.ajax({
+            $('.close').click(function (e) {
 
-                url: "{{path('tpbegin')}}",
+                if($(this).attr("abs") !== undefined)
+                    $.ajax({
 
-                data: {"eleve":$(this).attr("eleve"),"tp":$(this).attr("tp")},
+                        url: "{{path('tpbegin')}}",
 
-                success:function(orep){
-                    
-                    td.attr("etat","en-cours").html("commencé le "+orep.date);
-                    $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("commencé le "+orep.date);
-                }
+                        data: {"eleve":td.attr("eleve"),"tp":td.attr("tp"),"abs":$(this).attr("abs")},
 
+                        success:function(orep){
+                            
+                            td.attr("etat","en-cours").html("commencé le "+orep.date).attr("data-target","");
+                            if(orep.abs=="oui" && orep.id!=td.attr("eleve"))
+                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("absent le "+orep.date).attr("data-target","");
+                            else
+                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("commencé le "+orep.date).attr("data-target","");
+                        }
+
+                    });
+            
             });
         break;
         case 'en-cours':
@@ -129,12 +159,29 @@ $(document).on("click",".case",function () {
 
                 success:function(orep){
                     
+                    console.log(orep);
                     td.attr("etat","terminé").html("terminé le "+orep.date);
-                    $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("terminé le "+orep.date);
+                    if(orep.abs!="abs" && orep.id!=td.attr("eleve") && orep.abs!="noté")
+                        $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("terminé le "+orep.date);
                 }
                 
                 });
             
+        break;
+         case 'abs':
+            var td=$(this);
+            $.ajax({
+
+                url: "{{path('tpbegin')}}",
+
+                data: {"eleve":$(this).attr("eleve"),"tp":$(this).attr("tp"),"abs":"non"},
+
+                success:function(orep){
+                    
+                    td.attr("etat","en-cours").html("commencé le "+orep.date);
+                }
+
+            });
         break;
 }
     

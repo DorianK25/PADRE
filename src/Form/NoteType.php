@@ -46,9 +46,6 @@ class NoteType extends AbstractType
                     ]
              ]);
         }
-        $builder->add("absence",CheckboxType::class,[
-            "label" => "binome absent",
-            "required"=>false
-        ]);
+        
     }
 }

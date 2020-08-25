@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Classe;
 use App\Entity\Eleve;
 use App\Entity\Groupe;
+use App\Repository\EleveRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,7 +20,6 @@ class EleveType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         dump($options);
-        
         $builder->add('nom',TextType::class)
         ->add('prenom',TextType::class)
         ->add('date_naissance',DateType::class,[
@@ -29,7 +29,12 @@ class EleveType extends AbstractType
         ->add('binome',EntityType::class,[
             "class"=>Eleve::class,
             "data"=>$options["data"]->getBinome(),
-            'required'=>false
+            'required'=>false,
+            'query_builder' => function (EleveRepository $er) use($options){
+                return $er->createQueryBuilder('u')
+                ->Where('u.classe IN (:classe)')
+                ->setParameter('classe', $options["data"]->getClasse());;
+            }
         ])
         ->add('groupe',EntityType::class,[
             "class"=>Groupe::class,
@@ -47,8 +52,7 @@ class EleveType extends AbstractType
             "data_class"=>null,
             "empty_data"=>$options["data"]->getUrl_photo(),
             'required'=>false
-        ])
-        ->add('couleur',ColorType::class);
+        ]);
     }
 
     public function buildYearChoices()

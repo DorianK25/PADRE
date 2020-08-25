@@ -18,8 +18,8 @@ function setbarem(id){
 
                                 data: {"idTp":id,"idCompetence":$(this).attr("idCompetence"),"barem":$(this).val()},
 
-                                error: function(){
-                                    alert("une erreur est intervenu");
+                                success: function(){
+                                    $("#btn"+id).disabled();
                                 }
 
                             });

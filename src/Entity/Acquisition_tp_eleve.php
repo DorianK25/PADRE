@@ -26,7 +26,7 @@ class Acquisition_tp_eleve {
     private $Competence_tp;
 
      /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\acquisition")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Acquisition")
      */
     private $acquisition;
 

@@ -18,13 +18,16 @@
 
     <div id="syntaxe">NA : Non-Acquis    |    EA : En cours d'Acquisition    |     A : Acquis    |      AM : Acquis Maitrisé</div>
  <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
+ <a class="btn btn-secondary" href="{{path('tpIndex',{"classe":eleve.classe.id,"niveau":tp.niveau.id})}}">Retour</a>
 
 {{ form_end(form) }}
 
-votre Note : <div id="noteFinale">{% if noteBdd is not null %}{% if noteBdd != "" %}0{% else %}{{ noteBdd.note }}{% endif %}{% else %}0{% endif %}</div>/20
+votre Note : <div id="noteFinale">{% if noteBdd is defined %}{% if noteBdd.note is null %}0{% else %}{{ noteBdd.note }}{% endif %}{% endif %}</div>/20
 
 </div>
-
+<div style="text-align:center">
+    <a class="btn btn-secondary" href="{{path('tpDel',{"tp":tp.id,"eleve":eleve.id})}}">Supprimer</a>
+</div>
 </div>
 {% endblock %}
 {% block style %}

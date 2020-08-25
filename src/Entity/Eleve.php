@@ -56,10 +56,7 @@ class Eleve {
      */
     private $url_photo;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $couleur;
+    
 
     public function __toString()
     {
