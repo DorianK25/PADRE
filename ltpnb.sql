@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 25 août 2020 à 17:47
+-- Généré le :  mer. 26 août 2020 à 18:26
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.1.26
 
@@ -720,11 +720,35 @@ INSERT INTO `niveau` (`id`, `nom`) VALUES
 
 DROP TABLE IF EXISTS `planning`;
 CREATE TABLE IF NOT EXISTS `planning` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `couleur` varchar(250) NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `planning`
+--
+
+INSERT INTO `planning` (`id`, `couleur`, `date`) VALUES
+(1, '#ff0000', '2020-09-03'),
+(2, '#00ff00', '2020-01-05'),
+(3, '#0000ff', '1973-05-08'),
+(4, '#ffff00', '1951-03-02'),
+(5, '#ff00ff', '1952-02-02'),
+(6, '#ff00a2', '1968-01-21'),
+(7, '#00fffb', '1965-03-16'),
+(8, '#020750', '1968-03-14'),
+(9, '#570054', '1967-04-19'),
+(10, '#460101', '2022-10-19'),
+(11, '#ff9500', '2023-10-17'),
+(12, '#66abf5', '2020-09-25'),
+(13, '#dcf9dd', '2021-07-15'),
+(14, '#cac0ce', '2022-09-18'),
+(15, '#9d9d39', '2022-10-18'),
+(16, '#000000', '2021-09-14'),
+(17, '#ffffff', '2023-08-18'),
+(18, '#935ee4', '2021-09-14');
 
 -- --------------------------------------------------------
 
@@ -734,13 +758,21 @@ CREATE TABLE IF NOT EXISTS `planning` (
 
 DROP TABLE IF EXISTS `planning_eleve`;
 CREATE TABLE IF NOT EXISTS `planning_eleve` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `eleve_id` int(11) NOT NULL,
   `planning_id` int(11) NOT NULL,
   `binome_id` int(11) NOT NULL,
   `tp_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `planning_eleve`
+--
+
+INSERT INTO `planning_eleve` (`id`, `eleve_id`, `planning_id`, `binome_id`, `tp_id`) VALUES
+(1, 9, 1, 10, 5),
+(2, 13, 1, 12, 4);
 
 -- --------------------------------------------------------
 

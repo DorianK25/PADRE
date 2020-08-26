@@ -22,7 +22,7 @@ class PlanningType extends AbstractType
         
         $builder->add('couleur',ColorType::class)
         ->add('date',DateType::class,[
-            'years' => $this->buildYearChoices(),
+            
             'required'=>false
         ]);
         

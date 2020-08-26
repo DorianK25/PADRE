@@ -149,7 +149,7 @@ class TpController extends AbstractController
         }
         $allPlanning=$planningRepository->findAll();
         foreach($allPlanning as $planning){
-            $planning_[]=$planning;
+            $planning_[$planning->getPlanning()->getId()]=$planning;
             $eleveParClasse[$planning->getEleve()->getId()]["planning"][$planning->getTp()->getId()]=$planning;
             $eleveParClasse[$planning->getBinome()->getId()]["planning"][$planning->getTp()->getId()]=$planning;
         }
