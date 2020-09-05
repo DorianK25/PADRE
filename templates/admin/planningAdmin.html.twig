@@ -7,6 +7,7 @@
         <tr>
         <th>Couleur</th>
         <th>Date</th>
+        <th>Classe</th>
         <th>Action</th>
         </tr>
     </thead>
@@ -15,6 +16,7 @@
         <tr>
             <td style="background-color:{{ planning.couleur }}"></td>
             <td>{{ planning.date | date("d/m/Y") }}</td>
+            <td>{{ planning.classe }}</td>
             <td><a href="{{ path('admin_planning',{ 'action': 'edit' , 'planning': planning.id }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_planning',{ 'action': 'del' , 'planning': planning.id }) }}"><i class="fa fa-trash" ></i></a></td>
         </tr>    
         {% endfor %}
@@ -32,6 +34,9 @@
   <div class="form-group">
     <label for="exampleInputEmail1">Date :</label>
  {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+  <div>
+  <label for="exampleInputEmail1">Classe :</label>
+ {{ form_widget(form.classe, {'attr': {'class': 'form-control'}}) }}
   <div>
 
   <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>

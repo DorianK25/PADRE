@@ -35,7 +35,7 @@ class Planning_eleve {
     private $Binome;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tp")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tp",fetch="EAGER")
      */
     private $tp;
 

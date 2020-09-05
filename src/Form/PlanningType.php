@@ -24,6 +24,9 @@ class PlanningType extends AbstractType
         ->add('date',DateType::class,[
             
             'required'=>false
+        ])->add('classe',EntityType::class,[
+            "class"=>Classe::class,
+            
         ]);
         
     }

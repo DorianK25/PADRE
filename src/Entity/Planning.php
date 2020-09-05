@@ -30,6 +30,11 @@ class Planning {
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Classe")
+     */
+    private $classe;
+
    
 
 
@@ -85,4 +90,24 @@ class Planning {
         return $this;
     }
 
+
+    /**
+     * Get the value of classe
+     */ 
+    public function getClasse()
+    {
+        return $this->classe;
+    }
+
+    /**
+     * Set the value of classe
+     *
+     * @return  self
+     */ 
+    public function setClasse($classe)
+    {
+        $this->classe = $classe;
+
+        return $this;
+    }
 }

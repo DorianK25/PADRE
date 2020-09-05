@@ -22,6 +22,7 @@ use App\Form\PlanningType;
 use App\Form\CompetenceType;
 use App\Form\ProfesseurType;
 use App\Entity\Planning_eleve;
+use App\Form\PasswordProfType;
 use App\Form\Planning_eleveType;
 use App\Repository\TpRepository;
 use App\Repository\EleveRepository;
@@ -62,6 +63,7 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($form->getData()["mdp"]==$mdpRepo->find(1)->getMot_de_passe()){
+                $request->getSession()->set("admin",true);
                 return $this->redirectToRoute("admin_eleve",[
                     "action"=>"index"
                 ]);
@@ -79,7 +81,11 @@ class AdminController extends AbstractController
     /**
      * @Route("/eleve",name="admin_eleve" )
      */ 
-    public function eleveIndex(Request $request,EleveRepository $eleveRepo){
+    public function eleveIndex(Request $request,Planning_eleveRepository $plannings,EleveRepository $eleveRepo){
+
+        
+        if(!$request->getSession()->get("admin"))
+            return $this->redirectToRoute('formAdmin');
 
         $eleves=$eleveRepo->findBy([],array('classe' => 'ASC'));
 
@@ -105,6 +111,7 @@ class AdminController extends AbstractController
                 if($form->isSubmitted() && $form->isValid()){
                     $eleve=$form->getData();
                     $eleve->setBinome($eleve);
+                    if($eleve->getUrl_photo()!=null)
                     $eleve->setUrl_photo($eleve->getUrl_photo()->getClientOriginalName());
                     $this->getDoctrine()->getManager()->persist($eleve);
                     $this->getDoctrine()->getManager()->flush();
@@ -125,13 +132,16 @@ class AdminController extends AbstractController
                 $form=$this->createForm(EleveType::class,$eleve);
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
-                    if($eleve->getBinome()->getClasse()==$eleve->getClasse()){
-                        $binome=$eleveRepo->findOneBy(["binome"=>$eleve]);
-                        if($binome!=null)
+                    $binome=$eleveRepo->findOneBy(["binome"=>$eleve]);
+                    if($binome!=null){
+                        if($eleve->getBinome()->getClasse()==$eleve->getClasse())
+                        
+                        
                             if($binome!=$eleve)
                                 $binome->setBinome($binome);
+                            else
+                                $eleveRepo->findOneBy(["binome"=>$eleve->getBinome()])->setBinome($eleveRepo->findOneBy(["binome"=>$eleve->getBinome()]));
                         $eleve->getBinome()->setBinome($eleve);
-                        $eleve->getBinome()->setCouleur($eleve->getCouleur());
                     }else {
                         $eleve->setBinome($eleve);
                         $eleve->getBinome()->setBinome($eleve->getBinome());
@@ -139,10 +149,86 @@ class AdminController extends AbstractController
                     if(!is_string($eleve->getUrl_photo()) && $eleve->getUrl_photo()!=null)
                         $eleve->setUrl_photo($eleve->getUrl_photo()->getClientOriginalName());
 
+                    
+                    //traitement eleve
+                    foreach($plannings->findBy(["Eleve"=>$eleve]) as $planning){
+                        dump("eleve");
+                        if($plannings->findOneBy(["Eleve"=>$eleve,"Binome"=>$eleve->getBinome(),"Planning"=>$planning->getPlanning(),"tp"=>$planning->getTp()])==null )
+                            if($eleve->getBinome()!=$binome && $planning->getBinome()!=$planning->getEleve()){
+                                dump("ok1");
+                                $planningnew=new Planning_Eleve();
+                                $planningnew->setPlanning($planning->getPlanning())->setEleve($binome)->setBinome($binome)->setTp($planning->getTp());
+                                $this->getDoctrine()->getManager()->merge($planningnew);
+                                $planning->setBinome($eleve->getBinome());
+                            }else if($planning->getBinome()==$planning->getEleve()){
+                                dump("ok2");
+                                $planning->setBinome($eleve->getBinome());
+                                
+                                $this->getDoctrine()->getManager()->flush();
+                                if($plannings->findOneBy(["Eleve"=>$eleve->getBinome(),"Binome"=>$eleve->getBinome()])!=null)
+                                $this->getDoctrine()->getManager()->remove($plannings->findOneBy(["Eleve"=>$eleve->getBinome(),"Binome"=>$eleve->getBinome()]));
+                                
+                            }
+                        dump($planning);
+                    }
                     $this->getDoctrine()->getManager()->flush();
-                     return $this->redirectToRoute('admin_eleve',[
+
+                    foreach($plannings->findBy(["Binome"=>$eleve]) as $planning){
+                        dump("binome");
+                        if($plannings->findOneBy(["Eleve"=>$eleve,"Binome"=>$eleve->getBinome(),"Planning"=>$planning->getPlanning(),"tp"=>$planning->getTp()])==null)
+                            if($eleve->getBinome()!=$binome && $planning->getBinome()!=$planning->getEleve()){
+                                dump("ok1");
+                                dump($planning);
+                                $planningnew=new Planning_Eleve();
+                                $planningnew->setPlanning($planning->getPlanning())->setEleve($binome)->setBinome($binome)->setTp($planning->getTp());
+                                $this->getDoctrine()->getManager()->merge($planningnew);
+                                $planning->setEleve($eleve->getBinome());
+                        }else{
+                            dump("ok2");
+                            $planning->setEleve($eleve->getBinome());
+                        }
+                    }
+                    $this->getDoctrine()->getManager()->flush();
+
+                    foreach($plannings->findBy(["Binome"=>$eleve->getBinome()]) as $planning){
+                        dump("other");
+                        if($plannings->findOneBy(["Eleve"=>$eleve,"Binome"=>$eleve->getBinome(),"Planning"=>$planning->getPlanning(),"tp"=>$planning->getTp()])==null)
+                            if($planning->getBinome()!=$planning->getEleve()){
+                                dump("ok1");
+                                dump($planning);
+                                $planningnew=new Planning_Eleve();
+                                $planningnew->setPlanning($planning->getPlanning())->setEleve($planning->getEleve())->setBinome($planning->getEleve())->setTp($planning->getTp());
+                                $this->getDoctrine()->getManager()->merge($planningnew);
+                                $planning->setEleve($eleve);
+                        }else{
+                            dump("ok2");
+                            $planning->setEleve($eleve);
+                        }
+                    }
+
+                    $this->getDoctrine()->getManager()->flush();
+
+                    foreach($plannings->findBy(["Eleve"=>$eleve->getBinome()]) as $planning){
+                        dump("other bis");
+                        if($plannings->findOneBy(["Eleve"=>$eleve,"Binome"=>$eleve->getBinome(),"Planning"=>$planning->getPlanning(),"tp"=>$planning->getTp()])==null)
+                            if($planning->getBinome()!=$planning->getEleve()){
+                                dump("ok1");
+                                dump($planning);
+                                $planningnew=new Planning_Eleve();
+                                $planningnew->setPlanning($planning->getPlanning())->setEleve($planning->getBinome())->setBinome($planning->getBinome())->setTp($planning->getTp());
+                                $this->getDoctrine()->getManager()->merge($planningnew);
+                                $planning->setBinome($eleve);
+                        }else{
+                            dump("ok2");
+                            $planning->setBinome($eleve);
+                        }
+                    }
+
+                    $this->getDoctrine()->getManager()->flush();
+
+                     /*return $this->redirectToRoute('admin_eleve',[
                         "action"=>"index",
-                    ]);
+                    ]);*/
                 }
                 return $this->render('admin/eleveAdmin.html.twig',[
                     "eleves"=>$eleves,
@@ -173,6 +259,8 @@ class AdminController extends AbstractController
      */ 
     public function ProfIndex(Request $request,ProfesseurRepository $professeurRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $profs=$professeurRepository->findAll();
 
         $action=$request->get("action");
@@ -196,6 +284,7 @@ class AdminController extends AbstractController
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
                     $prof=$form->getData();
+                    $prof->setMotDePasse(md5(sha1("test")));
                     $this->getDoctrine()->getManager()->persist($prof);
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_prof',[
@@ -212,7 +301,17 @@ class AdminController extends AbstractController
 
                 $prof=$professeurRepository->find($request->get("prof"));
                 $form=$this->createForm(ProfesseurType::class,$prof);
+                $formMdp=$this->createForm(PasswordProfType::class);
+                $formMdp->handleRequest($request);
                 $form->handleRequest($request);
+                if($formMdp->isSubmitted() && $formMdp->isValid()){
+                        $prof->setMotDePasse(md5(sha1($formMdp->getData()["mdp"])));
+                        $this->getDoctrine()->getManager()->flush();
+                        return $this->redirectToRoute('admin_prof',[
+                            "action"=>"index",
+                        ]);
+                    
+                }
                 if($form->isSubmitted() && $form->isValid()){
                     $prof=$form->getData();
                     $this->getDoctrine()->getManager()->flush();
@@ -222,6 +321,7 @@ class AdminController extends AbstractController
                 }
                 return $this->render('admin/profAdmin.html.twig',[
                     "profs"=>$profs,
+                    "formMdp"=>$formMdp->createView(),
                     "form"=>$form->createView()
                 ]);
             break;
@@ -248,6 +348,8 @@ class AdminController extends AbstractController
      */ 
     public function PlanningIndex(Request $request,PlanningRepository $planningRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $plannings=$planningRepository->findAll();
 
         $action=$request->get("action");
@@ -321,14 +423,30 @@ class AdminController extends AbstractController
     /**
      * @Route("/planning_eleve",name="admin_planning_eleve" )
      */ 
-    public function Planning_eleveIndex(Request $request,Planning_eleveRepository $planning_eleveRepository){
-
-        $plannings=$planning_eleveRepository->findAll();
-
+    public function Planning_eleveIndex(Request $request,ClasseRepository $classeRepo,EleveRepository $eleveRepo,TpRepository $tpRepository,NiveauRepository $niveauRepository,Planning_eleveRepository $planning_eleveRepository){
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
+        $tps=$tpRepository->findBy(["niveau"=>$request->get("niveau")]);
+        $plannings=[];
+        dump($tps);
+        if(empty($tps)){
+            if($request->get("classe")==null)
+            $plannings=$planning_eleveRepository->findAll();
+            $tps=$tpRepository->findAll();
+        }
+        foreach($tps as $tp)
+            foreach($planning_eleveRepository->findBy(["tp"=>$tp],['Planning'=>'ASC']) as $planning){
+                if($planning->getPlanning()->getClasse()->getId()==$request->get("classe"))
+                    $plannings[]=$planning;
+            }
+        $option["tps"]=$tps;
+        $option["eleves"]=$eleveRepo->findBy(["classe"=>$request->get("classe")]);
+        if(empty($eleveRepo->findBy(["classe"=>$request->get("classe")])))
+            $option["eleves"]=$eleveRepo->findAll();     
+        $niveaux=$niveauRepository->findAll();
         $action=$request->get("action");
-
         
-
+        dump($plannings);
         switch($action){
 
             case "index" :
@@ -336,16 +454,22 @@ class AdminController extends AbstractController
 
                 return $this->render('admin/planning_eleveAdmin.html.twig',[
                     "plannings"=>$plannings,
+                    "niveaux"=>$niveaux,
+                    "niveauSelectionne"=>$request->get("niveau"),
+                    "classeSelect"=>$request->get("classe"),
+                    "classes"=>$classeRepo->findAll()
                 ]);
             break;
 
             case "add":
 
-                $planning_eleve=new Planning_eleve();
-                $form=$this->createForm(Planning_eleveType::class,$planning_eleve);
+                
+                $form=$this->createForm(Planning_eleveType::class,$option);
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
-                    $planning_eleve=$form->getData();
+                    $planning_eleve=new Planning_eleve();
+                    $data=$form->getData();
+                    $planning_eleve->setPlanning($data["planning"])->setEleve($data["eleve"])->setBinome($data["binome"])->setTp($data["tp"]);
                     $this->getDoctrine()->getManager()->persist($planning_eleve);
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_planning_eleve',[
@@ -354,17 +478,22 @@ class AdminController extends AbstractController
                 }
                 return $this->render('admin/planning_eleveAdmin.html.twig',[
                     "plannings"=>$plannings,
-                    "form"=>$form->createView()
+                    "form"=>$form->createView(),
+                    "niveaux"=>$niveaux,
+                    "niveauSelectionne"=>$request->get("niveau"),
+                    "classeSelect"=>$request->get("classe"),
+                    "classes"=>$classeRepo->findAll()
                 ]);
             break;
 
             case "edit":
-
-                $planning_eleve=$planning_eleveRepository->find($request->get("planning_eleve"));
-                $form=$this->createForm(planning_eleveType::class,$planning_eleve);
+                $option["entity"]=$planning_eleveRepository->find($request->get("planning_eleve"));
+                $form=$this->createForm(planning_eleveType::class,$option);
                 $form->handleRequest($request);
                 if($form->isSubmitted() && $form->isValid()){
-                    $planning_eleve=$form->getData();
+                   
+                    $data=$form->getData();
+                    $option["entity"]->setPlanning($data["planning"])->setEleve($data["eleve"])->setBinome($data["binome"])->setTp($data["tp"]);
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_planning_eleve',[
                         "action"=>"index",
@@ -372,7 +501,11 @@ class AdminController extends AbstractController
                 }
                 return $this->render('admin/planning_eleveAdmin.html.twig',[
                     "plannings"=>$plannings,
-                    "form"=>$form->createView()
+                    "form"=>$form->createView(),
+                    "niveaux"=>$niveaux,
+                    "niveauSelectionne"=>$request->get("niveau"),
+                    "classeSelect"=>$request->get("classe"),
+                    "classes"=>$classeRepo->findAll()
                 ]);
             break;
 
@@ -398,6 +531,8 @@ class AdminController extends AbstractController
      */ 
     public function TpIndex(Request $request,TpRepository $tpRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $tps=$tpRepository->findBy([],array('numero' => 'ASC'));
 
         $action=$request->get("action");
@@ -474,6 +609,8 @@ class AdminController extends AbstractController
      */ 
     public function CompetenceIndex(Request $request,CompetenceRepository $competenceRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $competences=$competenceRepository->findAll();
 
         $action=$request->get("action");
@@ -549,6 +686,8 @@ class AdminController extends AbstractController
      */ 
     public function CapaciteIndex(Request $request,CapaciteRepository $capaciteRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $capacites=$capaciteRepository->findAll();
 
         $action=$request->get("action");
@@ -624,6 +763,8 @@ class AdminController extends AbstractController
      */ 
     public function ClasseIndex(Request $request,ClasseRepository $classeRepository){
 
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $classes=$classeRepository->findAll();
 
         $action=$request->get("action");
@@ -699,7 +840,8 @@ class AdminController extends AbstractController
      * @Route("/groupe",name="admin_groupe" )
      */ 
     public function GroupeIndex(Request $request,GroupeRepository $groupeRepository){
-
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $groupes=$groupeRepository->findAll();
 
         $action=$request->get("action");
@@ -775,7 +917,8 @@ class AdminController extends AbstractController
      * @Route("/password",name="admin_mdp" )
      */ 
     public function PasswordIndex(Request $request,Mot_de_passe_adminRepository $mot_de_passe_adminRepository){
-
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $mdp=$mot_de_passe_adminRepository->find(1);
         $form=$this->createForm(Mot_de_passe_adminType::class);
         $form->handleRequest($request);
@@ -795,7 +938,8 @@ class AdminController extends AbstractController
      * @Route("/Niveau",name="admin_niveau" )
      */ 
     public function NiveauIndex(Request $request,NiveauRepository $niveauRepository){
-
+        if(!$request->getSession()->get("admin"))
+        return $this->redirectToRoute('formAdmin');
         $niveaux=$niveauRepository->findAll();
 
         $action=$request->get("action");

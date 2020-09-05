@@ -3,9 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Professeur;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ProfType extends AbstractType   
 {
@@ -17,6 +18,6 @@ class ProfType extends AbstractType
                 "choice_label" => "NomComplet"
                 
                 
-            ]);
+            ])->add("motDePasse",PasswordType::class);
     }
 }

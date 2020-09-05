@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 26 août 2020 à 18:26
--- Version du serveur :  5.7.24
--- Version de PHP :  7.1.26
+-- Généré le :  Dim 30 août 2020 à 14:33
+-- Version du serveur :  5.7.21
+-- Version de PHP :  7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -60,18 +60,6 @@ CREATE TABLE IF NOT EXISTS `acquisition_tp_eleve` (
   `professeur_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=165 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `acquisition_tp_eleve`
---
-
-INSERT INTO `acquisition_tp_eleve` (`id`, `eleve_id`, `competence_tp_id`, `acquisition_id`, `professeur_id`) VALUES
-(164, 10, 422, 1, 1),
-(163, 10, 423, 1, 1),
-(162, 10, 424, 1, 1),
-(161, 9, 422, 4, 1),
-(160, 9, 423, 4, 1),
-(159, 9, 424, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -185,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `competence_tp` (
   PRIMARY KEY (`id`),
   KEY `IDX_F0C0A5CA384F0DAC` (`tp_id`),
   KEY `IDX_F0C0A5CA15761DAB` (`competence_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=458 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=466 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `competence_tp`
@@ -598,7 +586,15 @@ INSERT INTO `competence_tp` (`id`, `barem_competence`, `tp_id`, `competence_id`)
 (418, 4, 99, 6),
 (419, 4, 99, 7),
 (420, 10, 99, 17),
-(421, 2, 99, 26);
+(421, 2, 99, 26),
+(458, 4, 100, 6),
+(459, 4, 100, 7),
+(460, 10, 100, 17),
+(461, 2, 100, 26),
+(462, 4, 101, 6),
+(463, 4, 101, 7),
+(464, 10, 101, 17),
+(465, 2, 101, 26);
 
 -- --------------------------------------------------------
 
@@ -621,7 +617,7 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   KEY `IDX_ECA105F78D4924C4` (`binome_id`),
   KEY `IDX_ECA105F77A45358C` (`groupe_id`),
   KEY `IDX_ECA105F78F5EA509` (`classe_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `eleve`
@@ -630,7 +626,7 @@ CREATE TABLE IF NOT EXISTS `eleve` (
 INSERT INTO `eleve` (`id`, `nom`, `prenom`, `date_naissance`, `mail`, `url_photo`, `binome_id`, `groupe_id`, `classe_id`) VALUES
 (9, 'BILLAU', 'Lucas', '1956-04-08 00:00:00', NULL, 'Billau.JPG', 10, NULL, 5),
 (10, 'BERTH', 'David', NULL, NULL, NULL, 9, NULL, 5),
-(11, 'BAETEMAN', 'Mathis', NULL, NULL, NULL, 11, NULL, 3),
+(30, 'TULLIER', 'Nathan', NULL, NULL, NULL, 31, NULL, 4),
 (12, 'BRUNIN', 'Mathys', NULL, NULL, 'Brunin.JPG', 13, NULL, 5),
 (13, 'BUCHON', 'Théo', NULL, NULL, NULL, 12, NULL, 5),
 (14, 'CHARLES', 'Steevy', NULL, NULL, NULL, 15, NULL, 5),
@@ -648,7 +644,11 @@ INSERT INTO `eleve` (`id`, `nom`, `prenom`, `date_naissance`, `mail`, `url_photo
 (26, 'PLOEGAERTS', 'Victor', NULL, NULL, NULL, 27, NULL, 5),
 (27, 'SENECHAL', 'Brandon', NULL, NULL, NULL, 26, NULL, 5),
 (28, 'THOREZ', 'Victorien', NULL, NULL, NULL, 29, NULL, 5),
-(29, 'VERCHELDE', 'Lucas', NULL, NULL, NULL, 28, NULL, 5);
+(29, 'VERCHELDE', 'Lucas', NULL, NULL, NULL, 28, NULL, 5),
+(31, 'TURBE', 'Noa', NULL, NULL, NULL, 30, NULL, 4),
+(32, 'VERSTRAETE', 'Carl', NULL, NULL, NULL, 32, NULL, 4),
+(33, 'XXX', 'KKK', NULL, NULL, NULL, 34, NULL, 3),
+(34, 'AAA', 'JJJ', NULL, NULL, NULL, 33, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -696,14 +696,14 @@ CREATE TABLE IF NOT EXISTS `niveau` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `niveau`
 --
 
 INSERT INTO `niveau` (`id`, `nom`) VALUES
-(0, 'Découverte de l\'automobile'),
+(1, 'Découverte de l\'automobile'),
 (2, 'Initiation à la réparation'),
 (3, 'Perfectionnement à la réparation'),
 (4, 'Contrôle, réglage, mesure'),
@@ -723,32 +723,41 @@ CREATE TABLE IF NOT EXISTS `planning` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `couleur` varchar(250) NOT NULL,
   `date` date NOT NULL,
+  `classe_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `planning`
 --
 
-INSERT INTO `planning` (`id`, `couleur`, `date`) VALUES
-(1, '#ff0000', '2020-09-03'),
-(2, '#00ff00', '2020-01-05'),
-(3, '#0000ff', '1973-05-08'),
-(4, '#ffff00', '1951-03-02'),
-(5, '#ff00ff', '1952-02-02'),
-(6, '#ff00a2', '1968-01-21'),
-(7, '#00fffb', '1965-03-16'),
-(8, '#020750', '1968-03-14'),
-(9, '#570054', '1967-04-19'),
-(10, '#460101', '2022-10-19'),
-(11, '#ff9500', '2023-10-17'),
-(12, '#66abf5', '2020-09-25'),
-(13, '#dcf9dd', '2021-07-15'),
-(14, '#cac0ce', '2022-09-18'),
-(15, '#9d9d39', '2022-10-18'),
-(16, '#000000', '2021-09-14'),
-(17, '#ffffff', '2023-08-18'),
-(18, '#935ee4', '2021-09-14');
+INSERT INTO `planning` (`id`, `couleur`, `date`, `classe_id`) VALUES
+(1, '#ff0000', '2020-01-01', 5),
+(2, '#00ff00', '2020-01-02', 5),
+(3, '#0000ff', '2020-01-03', 5),
+(4, '#ffff00', '2020-01-04', 5),
+(5, '#ff00ff', '2020-01-05', 5),
+(6, '#ff00a2', '2020-01-06', 5),
+(7, '#00fffb', '2020-01-07', 5),
+(8, '#76789e', '2020-01-08', 5),
+(9, '#7343a3', '2020-01-09', 5),
+(10, '#b48e8e', '2020-01-10', 5),
+(11, '#ff9500', '2020-01-01', 3),
+(12, '#66abf5', '2020-01-12', 5),
+(13, '#dcf9dd', '2020-01-13', 5),
+(14, '#cac0ce', '2020-01-14', 5),
+(22, '#b7c21e', '2020-01-18', 5),
+(21, '#6e6fbf', '2020-01-17', 5),
+(20, '#1cb55e', '2020-01-16', 5),
+(19, '#d51010', '2020-01-15', 5),
+(23, '#d279c8', '2020-01-19', 5),
+(24, '#14d8db', '2020-01-20', 5),
+(25, '#b98b27', '2020-01-21', 5),
+(26, '#1fa866', '2020-01-22', 5),
+(27, '#b65858', '2020-01-23', 5),
+(28, '#6280a7', '2020-01-24', 5),
+(29, '#869730', '2020-01-25', 5),
+(30, '#ff0000', '2022-06-19', 4);
 
 -- --------------------------------------------------------
 
@@ -760,19 +769,132 @@ DROP TABLE IF EXISTS `planning_eleve`;
 CREATE TABLE IF NOT EXISTS `planning_eleve` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `eleve_id` int(11) NOT NULL,
-  `planning_id` int(11) NOT NULL,
+  `planning_id` int(11) DEFAULT NULL,
   `binome_id` int(11) NOT NULL,
   `tp_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=328 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `planning_eleve`
 --
 
 INSERT INTO `planning_eleve` (`id`, `eleve_id`, `planning_id`, `binome_id`, `tp_id`) VALUES
-(1, 9, 1, 10, 5),
-(2, 13, 1, 12, 4);
+(203, 20, 1, 21, 97),
+(198, 9, 1, 10, 92),
+(199, 12, 1, 13, 93),
+(201, 16, 1, 17, 95),
+(202, 18, 1, 19, 96),
+(204, 22, 1, 23, 98),
+(205, 24, 1, 25, 100),
+(206, 26, 1, 27, 101),
+(207, 28, 1, 29, 102),
+(208, 14, 1, 15, 94),
+(209, 9, 2, 10, 93),
+(210, 9, 3, 10, 94),
+(211, 9, 4, 10, 95),
+(212, 9, 5, 10, 96),
+(213, 9, 6, 10, 97),
+(214, 9, 7, 10, 98),
+(215, 9, 8, 10, 100),
+(216, 9, 9, 10, 101),
+(217, 9, 10, 10, 102),
+(218, 12, 2, 13, 94),
+(219, 12, 3, 13, 95),
+(220, 12, 4, 13, 96),
+(229, 12, 6, 13, 98),
+(228, 12, 5, 13, 97),
+(223, 12, 7, 13, 100),
+(224, 12, 8, 13, 101),
+(225, 12, 9, 13, 102),
+(226, 12, 10, 13, 92),
+(230, 14, 2, 15, 95),
+(231, 14, 3, 15, 96),
+(232, 14, 4, 15, 97),
+(234, 14, 5, 15, 98),
+(235, 14, 6, 15, 100),
+(236, 14, 7, 15, 101),
+(237, 14, 8, 15, 102),
+(238, 14, 9, 15, 92),
+(239, 14, 10, 15, 93),
+(240, 16, 2, 17, 96),
+(241, 16, 3, 17, 97),
+(242, 16, 4, 17, 98),
+(243, 16, 5, 17, 100),
+(244, 16, 6, 17, 101),
+(245, 16, 7, 17, 102),
+(246, 16, 8, 17, 92),
+(247, 16, 9, 17, 93),
+(248, 16, 10, 17, 94),
+(249, 18, 2, 19, 97),
+(250, 18, 3, 19, 98),
+(251, 18, 4, 19, 100),
+(252, 18, 5, 19, 101),
+(253, 18, 6, 19, 102),
+(254, 18, 7, 19, 92),
+(255, 18, 8, 19, 93),
+(256, 18, 9, 19, 94),
+(257, 18, 10, 19, 95),
+(258, 20, 2, 21, 98),
+(259, 20, 3, 21, 100),
+(260, 20, 4, 21, 101),
+(261, 20, 5, 21, 102),
+(262, 20, 6, 21, 92),
+(263, 20, 7, 21, 93),
+(264, 20, 8, 21, 94),
+(265, 20, 9, 21, 95),
+(266, 20, 10, 21, 96),
+(267, 22, 2, 23, 100),
+(268, 22, 3, 23, 101),
+(269, 22, 4, 23, 92),
+(270, 22, 5, 23, 92),
+(271, 22, 6, 23, 93),
+(272, 22, 7, 23, 94),
+(273, 22, 8, 23, 95),
+(274, 22, 9, 23, 96),
+(275, 22, 10, 23, 97),
+(276, 22, 4, 23, 102),
+(277, 24, 2, 25, 101),
+(278, 24, 3, 25, 102),
+(279, 24, 4, 25, 92),
+(280, 24, 5, 25, 93),
+(281, 24, 6, 25, 94),
+(282, 24, 7, 25, 95),
+(283, 24, 8, 25, 96),
+(284, 24, 9, 25, 97),
+(285, 24, 10, 25, 98),
+(286, 26, 2, 27, 102),
+(287, 26, 3, 27, 92),
+(288, 26, 4, 27, 93),
+(289, 26, 5, 27, 94),
+(290, 26, 6, 27, 95),
+(291, 26, 7, 27, 96),
+(292, 26, 8, 27, 97),
+(293, 26, 9, 27, 98),
+(294, 26, 10, 27, 100),
+(295, 28, 2, 29, 92),
+(296, 28, 3, 29, 93),
+(297, 28, 4, 29, 94),
+(298, 28, 5, 29, 95),
+(303, 28, 6, 29, 96),
+(304, 28, 7, 29, 97),
+(305, 28, 8, 29, 98),
+(306, 28, 9, 29, 100),
+(307, 28, 10, 29, 101),
+(309, 33, 11, 34, 5),
+(310, 33, 12, 34, 4),
+(311, 33, 13, 34, 6),
+(312, 33, 14, 34, 7),
+(313, 33, 19, 34, 8),
+(314, 33, 20, 34, 9),
+(324, 33, 25, 34, 14),
+(323, 33, 24, 34, 13),
+(322, 33, 23, 34, 12),
+(321, 33, 22, 34, 11),
+(320, 33, 21, 34, 10),
+(325, 33, 25, 34, 15),
+(326, 33, 27, 34, 16),
+(327, 33, 28, 34, 17);
 
 -- --------------------------------------------------------
 
@@ -812,27 +934,27 @@ CREATE TABLE IF NOT EXISTS `tp` (
   `descriptif` varchar(255) NOT NULL,
   `niveau_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `tp`
 --
 
 INSERT INTO `tp` (`id`, `nom_tp`, `domaine`, `numero`, `nom_fichier`, `descriptif`, `niveau_id`) VALUES
-(5, 'Carte grise', 'Service gestion', 2, 'AS102-carte', 'L’élève doit être capable de prendre de compléter toutes les informations afin d\'établir les documents obligatoires', 0),
-(4, 'Hygiènne et Sécurité', 'Service travail', 1, 'AS101-Hyg', 'L’élève doit être capable de conaitre les règles de sécurité, maitriser la signalétique, lire et décoder les infos sur un extincteur', 0),
-(6, 'Réception véhicule', 'Service gestion', 3, 'AS103-recep', 'L’élève doit être capable de décoder une carte grise afin d\'en sortir les documents comptable', 0),
-(7, 'Reconaitre une carrosserie', 'Service gestion', 4, 'AS104-carro', 'L’élève doit être capable de reconnaitre toutes les formes de voitures en vue compléter les OR, les devis, les factures et retrouver les manuels de réparation', 0),
-(8, 'Identifier les caractéristiques véhicule', 'Service gestion', 5, 'AS105-ident', 'L’élève doit être capable de préparer le véhicule et compléter les documents', 0),
-(9, 'Utiliser un cric rouleur', 'Service travail', 6, 'AS106-cric', 'L’élève doit être capable de positionner un cric sous le véhicule et remplacer une roue', 0),
-(10, 'utiliser un pont élévateur', 'Service travail', 7, 'AS107-pont', 'L’élève doit identifier les points de levage', 0),
-(11, 'déposer et reposer une roue', 'Service travail', 8, 'AS108-depo', 'L’élève doit déposer et reposer une roue', 0),
-(12, 'poste de conduite', 'Service travail', 9, 'AS109-post', 'L’élève doit être capable d\'identifier les éléments du tableau de bord', 0),
-(13, 'Localiser un élément', 'Service travail', 10, 'AS110-local', 'L’élève doit être capable de retrouver l’emplacement des éléments d’une voiture', 0),
-(14, 'éléments sous capot', 'Service travail', 11, 'AS111-capo', 'L’élève doit être capable de nommer chacun des éléments du moteur et de reconnaître un moteur diesel ou essence', 0),
-(15, 'Choix de son équipement', 'Service travail', 12, 'AS112-équip', 'L’élève doit être capable de choisir le meilleur équipement pour travailler dans de bonne condition à l’atelier.', 0),
-(16, 'Préparer son poste de travail', 'Service travail', 13, 'AS113-poste', 'L’élève doit être capable de comprendre la procédure, préparer le véhicule à l’intervention, sélectionner son outillage, lever le véhicule en toute sécurité et ranger son matériel après son intervention', 0),
-(17, 'Sélection outillage', 'Service travail', 14, 'AS114-outi', 'L’élève doit être capable de reconnaitre tout l’outillage de l’atelier, choisir les outils les plus adapter à l’intervention.', 0),
+(5, 'Carte grise', 'Service gestion', 2, 'AS102-carte', 'L’élève doit être capable de prendre de compléter toutes les informations afin d\'établir les documents obligatoires', 1),
+(4, 'Hygiènne et Sécurité', 'Service travail', 1, 'AS101-Hyg', 'L’élève doit être capable de conaitre les règles de sécurité, maitriser la signalétique, lire et décoder les infos sur un extincteur', 1),
+(6, 'Réception véhicule', 'Service gestion', 3, 'AS103-recep', 'L’élève doit être capable de décoder une carte grise afin d\'en sortir les documents comptable', 1),
+(7, 'Reconaitre une carrosserie', 'Service gestion', 4, 'AS104-carro', 'L’élève doit être capable de reconnaitre toutes les formes de voitures en vue compléter les OR, les devis, les factures et retrouver les manuels de réparation', 1),
+(8, 'Identifier les caractéristiques véhicule', 'Service gestion', 5, 'AS105-ident', 'L’élève doit être capable de préparer le véhicule et compléter les documents', 1),
+(9, 'Utiliser un cric rouleur', 'Service travail', 6, 'AS106-cric', 'L’élève doit être capable de positionner un cric sous le véhicule et remplacer une roue', 1),
+(10, 'utiliser un pont élévateur', 'Service travail', 7, 'AS107-pont', 'L’élève doit identifier les points de levage', 1),
+(11, 'déposer et reposer une roue', 'Service travail', 8, 'AS108-depo', 'L’élève doit déposer et reposer une roue', 1),
+(12, 'poste de conduite', 'Service travail', 9, 'AS109-post', 'L’élève doit être capable d\'identifier les éléments du tableau de bord', 1),
+(13, 'Localiser un élément', 'Service travail', 10, 'AS110-local', 'L’élève doit être capable de retrouver l’emplacement des éléments d’une voiture', 1),
+(14, 'éléments sous capot', 'Service travail', 11, 'AS111-capo', 'L’élève doit être capable de nommer chacun des éléments du moteur et de reconnaître un moteur diesel ou essence', 1),
+(15, 'Choix de son équipement', 'Service travail', 12, 'AS112-équip', 'L’élève doit être capable de choisir le meilleur équipement pour travailler dans de bonne condition à l’atelier.', 1),
+(16, 'Préparer son poste de travail', 'Service travail', 13, 'AS113-poste', 'L’élève doit être capable de comprendre la procédure, préparer le véhicule à l’intervention, sélectionner son outillage, lever le véhicule en toute sécurité et ranger son matériel après son intervention', 1),
+(17, 'Sélection outillage', 'Service travail', 14, 'AS114-outi', 'L’élève doit être capable de reconnaitre tout l’outillage de l’atelier, choisir les outils les plus adapter à l’intervention.', 1),
 (18, 'effectuer les opérations d\'entretiens périodiques', 'Motorisation', 29, 'MA101-entr', 'L’élève doit localiser identifier et effectuer un entretien périodique', 6),
 (19, 'Le multimètre', 'Gestion énergie électrique', 15, 'GE101-multi', 'L’élève doit être capable d\'identifié les différentes unités de mesure électriques et de les relevés', 2),
 (20, 'Remplacement de roulement de roue', 'Liaison au sol', 16, 'LS101-roul', 'L’élève doit identifier contrôler et remplacer un roulement', 2),
@@ -912,9 +1034,11 @@ INSERT INTO `tp` (`id`, `nom_tp`, `domaine`, `numero`, `nom_fichier`, `descripti
 (94, 'Révision demarreur', 'Gestion énergie électrique', 93, 'GE122-rede', 'L’élève doit être capable de Remplacer, contrôler un démarreur', 5),
 (95, 'Révision embrayage', 'Transmission', 94, 'T308-reem', 'L’élève doit être capable de Remplacer, contrôler un embrayage', 5),
 (96, 'Révision freins', 'Freinage', 95, 'F109-refr', 'L’élève doit être capable de Remplacer, contrôler les freins', 5),
-(97, 'Révision service', 'Service gestion', 96, 'AS129-rein', 'L’élève doit être capable de d’utiliser le système informatique pour compléter les documents administratifs', 5),
+(97, 'Révision service pneu', 'Service gestion', 96, 'AS129-rein', 'L’élève doit être capable de d’utiliser le système informatique pour compléter les documents administratifs', 5),
 (98, 'Révision moteur', 'Motorisation', 97, 'MA121-recu', 'L’élève doit être capable de Remplacer, contrôler une culasse', 5),
-(99, 'Révision pneu', 'Liaison au sol', 98, 'LS114-repn', 'L’élève doit être capable de Remplacer, contrôler des pneumatiques', 0);
+(100, 'Révision vidange', 'Motorisation', 99, 'MA120-reep', 'L’élève doit être capable de faire la vidange moteur, remplacer tous les filtres, vérifier les niveaux', 5),
+(101, 'Révision transmission', 'Transmission', 100, 'TE309-retr', 'L’élève doit identifier déposer et reposer une transmission', 5),
+(102, 'Révision direction', 'Liaison au sol', 101, 'LS115-reti', 'L’élève doit être capable de remplacer un triangle inférieur', 5);
 
 -- --------------------------------------------------------
 
@@ -935,16 +1059,7 @@ CREATE TABLE IF NOT EXISTS `tp_note` (
   KEY `IDX_DAD35B95A6CC7B2` (`eleve_id`),
   KEY `IDX_DAD35B95384F0DAC` (`tp_id`),
   KEY `IDX_DAD35B95ABC1F7FE` (`professeur_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=172 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `tp_note`
---
-
-INSERT INTO `tp_note` (`id`, `note`, `eleve_id`, `tp_id`, `professeur_id`, `etat`, `date`) VALUES
-(167, NULL, 11, 4, 1, 'terminé', '2020-08-23'),
-(170, '20.00', 9, 4, 1, 'noté', '2020-08-25'),
-(171, '0.00', 10, 4, 1, 'noté', '2020-08-25');
+) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

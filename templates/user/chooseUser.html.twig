@@ -8,8 +8,19 @@
     <div class="form-group">
     <label for="exampleInputEmail1">Bonjour qui êtes-vous ? :</label>
         {{ form_widget(form.prof, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+    <div class="form-group">
+    <label>Mot de passe :</label>
+        {{ form_widget(form.motDePasse, {'attr': {'class': 'form-control'}}) }}
+        
     </div>
 
+    {% if message is defined %}
+    <div class="form-group">
+        <label>{{ message }}</label>
+    </div>
+    {% endif %}
     
 
     <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>

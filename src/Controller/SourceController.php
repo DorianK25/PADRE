@@ -29,6 +29,8 @@ class SourceController extends AbstractController
     public function index(Request $request,CapaciteRepository $capacitesRepo,CompetenceRepository $competencesRepo,TpRepository $tpsRepo,Competence_tpRepository $compTpRepo): Response
     {
 
+        $request->getSession()->set("admin",false);
+
         $tps=$tpsRepo->findBy([],array('numero' => 'ASC'));
         $competences_=$competencesRepo->findBy([],["capacite"=>'ASC',"code_competence"=>"ASC"]);
         $capacites_=$capacitesRepo->findAll();
@@ -63,6 +65,8 @@ class SourceController extends AbstractController
      */
     public function create(CompetenceRepository $competencesRepo,Competence_tpRepository $compTpRepo,TpRepository $tpsRepo,Request $request)
     {
+
+        $request->getSession()->set("admin",false);
 
         $competenceTp=new Competence_tp();
         $entityManager = $this->getDoctrine()->getManager();

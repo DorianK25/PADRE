@@ -6,7 +6,7 @@
 <select id="classe">
     
     {% for classe in classes %}
-        <option {% if eleveParClasse is empty %}{% else %}{% set first = eleveParClasse["eleve"]|first %}{% if classe.id == first.classe.id %}selected{% endif %}{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
+        <option {% if eleveParClasse["eleve"] is empty %}{% else %}{% set first = eleveParClasse["eleve"]|first %}{% if classe.id == first.classe.id %}selected{% endif %}{% endif %} value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
     {% endfor %}
     
 </select>
@@ -30,7 +30,7 @@
                 <tr>
                     <td class="eleve" eleve="{{ eleve.id }}">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
-                        <td style="background-color:{% if eleveParClasse[eleve.id]["planning"][tp.id] is defined %}{{ eleveParClasse[eleve.id]["planning"][tp.id].planning.couleur }}{% endif %}">
+                        <td>
                             {% if note[eleve.id][tp.id] is defined %}
                                 {% if note[eleve.id][tp.id].etat == "noté" %}
                                     {{ note[eleve.id][tp.id].note }} / 20
@@ -45,21 +45,7 @@
                 </tr>
         {% endfor %}
     </table>
-    <table>
-        
-        {% for planning_ in planning %}
-
-            <tr>
-                <td>{{ planning_.planning.date | date("d/m/Y")  }}</td>
-            </tr>
-            <tr>
-                <td style="background-color:{{ planning_.planning.couleur }}">&nbsp; </td>
-            </tr>
-
-        {% endfor %}
-        
-
-    </table>
+    
 
 </body>
 {% endblock %}

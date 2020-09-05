@@ -18,7 +18,7 @@ class ProfesseurType extends AbstractType
     {
         
         $builder->add('nom',TextType::class)
-        ->add('Prenom',TextType::class);
+        ->add('prenom',TextType::class);
         
     }
 }

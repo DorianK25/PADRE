@@ -17,17 +17,20 @@ class Professeur {
     private $id;
 
 
-    
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $motDePasse;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Nom;
+    private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Prenom;
+    private $prenom;
 
 
     
@@ -41,11 +44,11 @@ class Professeur {
     }
 
     /**
-     * Get the value of Prenom
+     * Get the value of prenom
      */ 
     public function getPrenom()
     {
-        return $this->Prenom;
+        return $this->prenom;
     }
 
     /**
@@ -53,11 +56,43 @@ class Professeur {
      */ 
     public function getNom()
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
     public function getNomComplet(){
 
-        return $this->Nom." ".$this->Prenom;
+        return $this->nom." ".$this->prenom;
+    }
+
+    /**
+     * Get the value of motDePasse
+     */ 
+    public function getMotDePasse()
+    {
+        return $this->motDePasse;
+    }
+
+    /**
+     * Set the value of motDePasse
+     *
+     * @return  self
+     */ 
+    public function setMotDePasse($motDePasse)
+    {
+        $this->motDePasse = $motDePasse;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of prenom
+     *
+     * @return  self
+     */ 
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
     }
 }

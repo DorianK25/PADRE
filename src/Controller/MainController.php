@@ -25,6 +25,7 @@ class MainController extends AbstractController
     public function index(Request $request)
     {
         
+        $request->getSession()->set("admin",false);
         
         return $this->render('base.html.twig');
     }

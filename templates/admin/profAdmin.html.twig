@@ -36,8 +36,24 @@
     </div>
 <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}
-</div>
+
 {% else %}
 <a class="btn tbn primary" href="{{ path('admin_prof',{ 'action': 'add' }) }}">Creer un nouveau Professeur</a>
+{% endif %}
+<hr></br>
+{% if formMdp is defined %}
+<h3>Changer mot de passe </h3>
+</br><hr>
+
+{{ form_start(formMdp) }}
+
+    <div class="form-group">
+        
+        {{ form_widget(formMdp.mdp) }}
+        
+    </div>
+<button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
+{{ form_end(formMdp) }}
+</div>
 {% endif %}
 {% endblock %}
