@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  Dim 30 août 2020 à 14:33
+-- Généré le :  lun. 07 sep. 2020 à 14:56
 -- Version du serveur :  5.7.21
 -- Version de PHP :  7.2.4
 
@@ -59,7 +59,19 @@ CREATE TABLE IF NOT EXISTS `acquisition_tp_eleve` (
   `acquisition_id` int(11) NOT NULL,
   `professeur_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=165 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=174 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `acquisition_tp_eleve`
+--
+
+INSERT INTO `acquisition_tp_eleve` (`id`, `eleve_id`, `competence_tp_id`, `acquisition_id`, `professeur_id`) VALUES
+(170, 12, 398, 1, 1),
+(169, 12, 397, 1, 1),
+(168, 12, 396, 3, 1),
+(171, 13, 396, 3, 1),
+(172, 13, 397, 1, 1),
+(173, 13, 398, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -735,7 +747,7 @@ INSERT INTO `planning` (`id`, `couleur`, `date`, `classe_id`) VALUES
 (1, '#ff0000', '2020-01-01', 5),
 (2, '#00ff00', '2020-01-02', 5),
 (3, '#0000ff', '2020-01-03', 5),
-(4, '#ffff00', '2020-01-04', 5),
+(4, '#ffc800', '2020-01-04', 5),
 (5, '#ff00ff', '2020-01-05', 5),
 (6, '#ff00a2', '2020-01-06', 5),
 (7, '#00fffb', '2020-01-07', 5),
@@ -907,6 +919,7 @@ CREATE TABLE IF NOT EXISTS `professeur` (
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mot_de_passe` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
@@ -914,9 +927,9 @@ CREATE TABLE IF NOT EXISTS `professeur` (
 -- Déchargement des données de la table `professeur`
 --
 
-INSERT INTO `professeur` (`nom`, `prenom`, `id`) VALUES
-('Keurinck', 'Stephane', 1),
-('Basuyaux', 'Jean-Philipe', 2);
+INSERT INTO `professeur` (`nom`, `prenom`, `id`, `mot_de_passe`) VALUES
+('Keurinck', 'Stephane', 1, '21f7cdeda2af2de6c44cf922ffc8b8b4'),
+('Basuyaux', 'Jean-Philipe', 2, '68358d5d9cbbf39fe571ba41f26524b6');
 
 -- --------------------------------------------------------
 
@@ -1059,7 +1072,18 @@ CREATE TABLE IF NOT EXISTS `tp_note` (
   KEY `IDX_DAD35B95A6CC7B2` (`eleve_id`),
   KEY `IDX_DAD35B95384F0DAC` (`tp_id`),
   KEY `IDX_DAD35B95ABC1F7FE` (`professeur_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=186 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `tp_note`
+--
+
+INSERT INTO `tp_note` (`id`, `note`, `eleve_id`, `tp_id`, `professeur_id`, `etat`, `date`) VALUES
+(182, '2.67', 12, 92, 1, 'noté', '2020-08-31'),
+(181, NULL, 10, 92, 1, 'abs', '2020-08-31'),
+(183, '2.67', 13, 92, 1, 'noté', '2020-08-31'),
+(184, NULL, 9, 93, 1, 'terminé', '2020-09-03'),
+(185, NULL, 10, 93, 1, 'terminé', '2020-09-03');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
