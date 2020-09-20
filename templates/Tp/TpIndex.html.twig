@@ -28,10 +28,18 @@
                 <tr>
                     <td class="eleve" eleve="{{ eleve.id }}">{{ eleve.nom }} {{ eleve.prenom }}</td>
                     {% for tp in tps %}
-                        <td style="background-color:{% if eleveParClasse[eleve.id]["planning"][tp.id] is defined %}{{ eleveParClasse[eleve.id]["planning"][tp.id].planning.couleur }}{% endif %}" {% if note[eleve.id][tp.id] is defined %}{% else %}data-target="#exampleModal" data-toggle="modal"{% endif %} class="case" eleve="{{ eleve.id }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
+                        <td style="background-color:{% if eleveParClasse[eleve.id]["planning"][tp.id] is defined %}{{ eleveParClasse[eleve.id]["planning"][tp.id].planning.couleur }}{% endif %}" {% if note[eleve.id][tp.id] is defined %}{% else %}data-target="#exampleModal" data-toggle="modal"{% endif %} class="case" eleve="{{ eleve.id }}" binomeNom="{{ eleve.binome.nom }}" binomePrenom="{{ eleve.binome.prenom }}" tp="{{ tp.id }}" etat={% if note[eleve.id][tp.id] is defined %}"{{ note[eleve.id][tp.id].etat }}"{% else %}"null"{% endif %}>
                             {% if note[eleve.id][tp.id] is defined %}
                                 {% if note[eleve.id][tp.id].etat == "noté" %}
-                                    {{ note[eleve.id][tp.id].note }} / 20
+                                    {% if note[eleve.id][tp.id].note < 5 %}
+                                    Non-Acquis
+                                    {% elseif note[eleve.id][tp.id].note < 10 %}
+                                    En cours d'acquisition
+                                    {% elseif note[eleve.id][tp.id].note < 15 %}
+                                    Acquis
+                                    {% else %}
+                                    Maitrisé
+                                    {% endif %}
                                 {% elseif note[eleve.id][tp.id].etat == "en-cours" %}
                                     commencé le {{ note[eleve.id][tp.id].date|date("d/m/Y") }}
                                 {% elseif note[eleve.id][tp.id].etat == "terminé" %}
@@ -71,7 +79,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Binome Absent :</h5>
+        <h5 id="text" class="modal-title">Binome Absent :</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -145,6 +153,8 @@ $(document).on("click",".case",function () {
 
         case 'null':
             var td=$(this);
+            console.log(td.attr("binomenom"));
+            $("#text").html(td.attr("binomenom")+" "+td.attr("binomeprenom")+" Absent : ");
             $('.close').click(function (e) {
 
                 if($(this).attr("abs") !== undefined)

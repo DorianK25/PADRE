@@ -611,7 +611,7 @@ class AdminController extends AbstractController
 
         if(!$request->getSession()->get("admin"))
         return $this->redirectToRoute('formAdmin');
-        $competences=$competenceRepository->findAll();
+        $competences=$competenceRepository->findBy([],["code_competence"=>"ASC"]);
 
         $action=$request->get("action");
 
@@ -835,82 +835,6 @@ class AdminController extends AbstractController
        
     }
 
-
-    /**
-     * @Route("/groupe",name="admin_groupe" )
-     */ 
-    public function GroupeIndex(Request $request,GroupeRepository $groupeRepository){
-        if(!$request->getSession()->get("admin"))
-        return $this->redirectToRoute('formAdmin');
-        $groupes=$groupeRepository->findAll();
-
-        $action=$request->get("action");
-
-        
-
-        switch($action){
-
-            case "index" :
-
-
-                return $this->render('admin/groupeAdmin.html.twig',[
-                    "groupes"=>$groupes,
-                ]);
-
-            break;
-
-            case "add":
-
-                $groupe=new Groupe();
-                $form=$this->createForm(GroupeType::class,$groupe);
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()){
-                    $this->getDoctrine()->getManager()->persist($groupe);
-                    $this->getDoctrine()->getManager()->flush();
-                    return $this->redirectToRoute('admin_groupe',[
-                        "action"=>"index",
-                    ]);
-                }
-                return $this->render('admin/groupeAdmin.html.twig',[
-                    "groupes"=>$groupes,
-                    "form"=>$form->createView()
-                ]);
-            break;
-
-            case "edit":
-
-                $groupe=$groupeRepository->find($request->get("groupe"));
-                $form=$this->createForm(GroupeType::class,$groupe);
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()){
-                    
-                    $this->getDoctrine()->getManager()->flush();
-                    return $this->redirectToRoute('admin_groupe',[
-                        "action"=>"index",
-                    ]);
-                }
-                return $this->render('admin/groupeAdmin.html.twig',[
-                    "groupes"=>$groupes,
-                    "form"=>$form->createView()
-                ]);
-            break;
-
-            case "del":
-
-                $groupe=$groupeRepository->find($request->get("groupe"));
-                $this->getDoctrine()->getManager()->remove($groupe);
-                $this->getDoctrine()->getManager()->flush();
-                return $this->redirectToRoute('admin_groupe',[
-                    "action"=>"index",
-                ]);
-            break;
-
-
-        }
-
-
-       
-    }
 
     
     /**

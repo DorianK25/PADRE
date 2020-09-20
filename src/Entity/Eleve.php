@@ -36,10 +36,6 @@ class Eleve {
      */
     private $binome;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Groupe")
-     */
-    private $groupe;
     
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Classe")

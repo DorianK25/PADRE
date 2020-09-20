@@ -198,7 +198,19 @@ class TpController extends AbstractController
             $this->getDoctrine()->getManager()->remove($note);
             
             foreach ($acquisitions as $acquisition){    
+                if(!empty($acquisition))
+                $this->getDoctrine()->getManager()->remove($acquisition[0]);
                 
+            }
+
+            
+            $note=$tpNoteRepository->findOneBy(["eleve"=>$eleve->getBinome(),"tp"=>$tp]);
+            foreach ($comps as $comp)
+                $acquisitions[]=$acquisition_tp_eleveRepository->findBy(["eleve"=>$eleve->getBinome(),"Competence_tp"=>$comp]);
+            $this->getDoctrine()->getManager()->remove($note);
+            
+            foreach ($acquisitions as $acquisition){    
+                if(!empty($acquisition))
                 $this->getDoctrine()->getManager()->remove($acquisition[0]);
                 
             }
@@ -287,7 +299,7 @@ class TpController extends AbstractController
         
         $eleve=$eleveRepo->find($request->get('eleve'));
         $tp=$tpRepo->find($request->get('tp'));
-        $competences=$compTpRepo->findBy(["tp"=>$tp]);
+        $competences=$compTpRepo->findBy(["tp"=>$tp],["competence"=>"ASC"]);
         foreach($competences as $comp)
             $acquisition_[$comp->getId()]=$acquisition_tp_eleveRepository->findBy(["eleve"=>$eleve,"Competence_tp"=>$comp]);
         $notebdd=$tp_noteRepository->findOneBy(["tp"=>$tp,"eleve"=>$eleve]);
@@ -348,6 +360,7 @@ class TpController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute("tpIndex",[
                 "classe"=>$eleve->getClasse()->getId(),
+                "niveau"=>$tp->getNiveau()->getId()
                 ]);
         }
         return $this->render('Tp/TpAddNote.html.twig', [
