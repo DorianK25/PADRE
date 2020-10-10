@@ -79,17 +79,24 @@ class SourceController extends AbstractController
 
                 if($competenceTpbis->getBarem_competence()!=$competenceTp->getBarem_competence()){
                     $competenceTpbis->setBarem_competence($competenceTp->getBarem_competence());
-                    $entityManager->flush();
+                    
 
                 }
             }else{
                 $entityManager->persist($competenceTp);
-                $entityManager->flush();
+              
+            }
+        else   
+            if($competenceTpbis){
+
+                $this->getDoctrine()->getManager()->remove($competenceTpbis);
+                
+
             }
 
 
 
-        
+            $this->getDoctrine()->getManager()->flush();
 
         return new Response("success");
         

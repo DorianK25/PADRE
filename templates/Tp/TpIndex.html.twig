@@ -168,9 +168,9 @@ $(document).on("click",".case",function () {
                             
                             td.attr("etat","en-cours").html("commencé le "+orep.date).attr("data-target","");
                             if(orep.abs=="oui" && orep.id!=td.attr("eleve"))
-                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("absent le "+orep.date).attr("data-target","");
+                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("absent le "+orep.date).attr("data-target","").attr("etat","en-cours");
                             else
-                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("commencé le "+orep.date).attr("data-target","");
+                                $("td[eleve="+orep.id+"][tp="+td.attr("tp")+"]").html("commencé le "+orep.date).attr("data-target","").attr("etat","en-cours");
                         }
 
                     });
