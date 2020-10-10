@@ -159,26 +159,7 @@ class Eleve {
         return $this;
     }
 
-    /**
-     * Get the value of groupe
-     */ 
-    public function getGroupe()
-    {
-        return $this->groupe;
-    }
-
-    /**
-     * Set the value of groupe
-     *
-     * @return  self
-     */ 
-    public function setGroupe($groupe)
-    {
-        $this->groupe = $groupe;
-
-        return $this;
-    }
-
+   
     /**
      * Get the value of classe
      */ 

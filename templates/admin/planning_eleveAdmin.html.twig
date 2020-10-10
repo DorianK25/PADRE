@@ -22,6 +22,31 @@
     {% endfor %}
     
 </select>
+
+{% if form is defined %}
+<hr>
+{{ form_start(form) }}
+
+    <div class="form-group">
+    <label for="exampleInputEmail1">Planning :</label>
+ {{ form_widget(form.planning, {'attr': {'class': 'form-control'}}) }}
+ <div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Eleve :</label>
+ {{ form_widget(form.eleve, {'attr': {'class': 'form-control'}}) }}
+  <div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Binome :</label>
+ {{ form_widget(form.binome, {'attr': {'class': 'form-control'}}) }}
+  <div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Tp :</label>
+ {{ form_widget(form.tp, {'attr': {'class': 'form-control'}}) }}
+  <div>
+  <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
+{{ form_end(form) }}
+</div>
+{% endif %}
 <div class="table-responsive">
 {% if form is not defined %}
     {% if niveauSelectionne is not null %}
@@ -76,30 +101,6 @@
     </tbody>
     </table>
 </div>
-{% if form is defined %}
-<hr>
-{{ form_start(form) }}
-
-    <div class="form-group">
-    <label for="exampleInputEmail1">Planning :</label>
- {{ form_widget(form.planning, {'attr': {'class': 'form-control'}}) }}
- <div>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Eleve :</label>
- {{ form_widget(form.eleve, {'attr': {'class': 'form-control'}}) }}
-  <div>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Binome :</label>
- {{ form_widget(form.binome, {'attr': {'class': 'form-control'}}) }}
-  <div>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Tp :</label>
- {{ form_widget(form.tp, {'attr': {'class': 'form-control'}}) }}
-  <div>
-  <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
-{{ form_end(form) }}
-</div>
-{% endif %}
 {% endblock %}
 {% block script %}
 

@@ -238,7 +238,23 @@ class AdminController extends AbstractController
 
             case "del":
 
-                $eleve=$eleveRepo->find($request->get("eleve"));
+                $eleve=$eleveRepo->find($request->get("eleve"));$eleve=$eleveRepo->find($request->get("eleve"));
+		foreach($plannings->findBy(["Eleve"=>$eleve]) as $planning){
+		if($planning->getEleve()==$planning->getBinome())
+			$this->getDoctrine()->getManager()->remove($planning);
+		else
+			$planning->setEleve($planning->getBinome());
+
+		}
+		foreach($plannings->findBy(["Binome"=>$eleve]) as $planning){
+		if($planning->getEleve()==$planning->getBinome())
+			$this->getDoctrine()->getManager()->remove($planning);
+		else
+			$planning->setBinome($planning->getEleve());
+
+		}
+		if($eleve->getBinome()!=$eleve)
+			$eleve->getBinome()->setBinome($eleve->getBinome());
                 $this->getDoctrine()->getManager()->remove($eleve);
                 $this->getDoctrine()->getManager()->flush();
                 return $this->redirectToRoute('admin_eleve',[
@@ -431,7 +447,7 @@ class AdminController extends AbstractController
         dump($tps);
         if(empty($tps)){
             if($request->get("classe")==null)
-            $plannings=$planning_eleveRepository->findAll();
+            	$plannings=$planning_eleveRepository->findAll();
             $tps=$tpRepository->findAll();
         }
         foreach($tps as $tp)
@@ -441,7 +457,9 @@ class AdminController extends AbstractController
             }
         $option["tps"]=$tps;
         $option["eleves"]=$eleveRepo->findBy(["classe"=>$request->get("classe")]);
-        if(empty($eleveRepo->findBy(["classe"=>$request->get("classe")])))
+	
+
+        if($request->get("classe")==null)
             $option["eleves"]=$eleveRepo->findAll();     
         $niveaux=$niveauRepository->findAll();
         $action=$request->get("action");

@@ -1,39 +1,7 @@
 {% extends "admin/MainAdmin.html.twig" %}
 
 {% block content %}
-<div class="table-responsive">
-    <a class="btn tbn primary" href="{{ path('admin_eleve',{ 'action': 'add' }) }}">Creer un nouvel Eleve</a>
-    <table class="table table-striped table-sm">
 
-    <thead>
-        <tr>
-        <th>Nom</th>
-        <th>Prenom</th>
-        <th>Date de Naissance</th>
-        <th>Binôme</th>
-        <th>Groupe</th>
-        <th>Classe</th>
-        <th>Mail</th>
-        <th>Photo</th>
-        <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for eleve in eleves %}
-        <tr>
-            <td>{{ eleve.nom }}</td>
-            <td>{{ eleve.prenom }}</td>
-            <td>{{ eleve.date_naissance | date("d/m/Y") }}</td>
-            <td>{% if eleve.binome %}{{ eleve.binome.nom }} {{ eleve.binome.prenom }}{% endif %}</td>
-            <td>{% if eleve.classe %}{{ eleve.classe.nom_classe }}{% endif %}</td>
-            <td>{{ eleve.mail }}</td>
-            <td><img src="http://192.168.1.42/PADRE/src/img/{{ eleve.url_photo }}"/></td>
-            <td><a href="{{ path('admin_eleve',{ 'action': 'edit' , 'eleve': eleve.id }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_eleve',{ 'action': 'del' , 'eleve': eleve.id }) }}"><i class="fa fa-trash" ></i></a></td>
-        </tr>    
-        {% endfor %}
-    </tbody>
-    </table>
-</div>
 {% if form is defined %}
 <hr>
 {{ form_start(form) }}
@@ -69,6 +37,40 @@
   <button type="submit" class="btn btn-success">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}
 </div>
-
 {% endif %}
+<div class="table-responsive">
+    <a class="btn tbn primary" href="{{ path('admin_eleve',{ 'action': 'add' }) }}">Creer un nouvel Eleve</a>
+    <table class="table table-striped table-sm">
+
+    <thead>
+        <tr>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Date de Naissance</th>
+        <th>Binôme</th>
+        <th>Classe</th>
+        <th>Mail</th>
+        <th>Photo</th>
+        <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for eleve in eleves %}
+        <tr>
+            <td>{{ eleve.nom }}</td>
+            <td>{{ eleve.prenom }}</td>
+            <td>{{ eleve.date_naissance | date("d/m/Y") }}</td>
+            <td>{% if eleve.binome %}{{ eleve.binome.nom }} {{ eleve.binome.prenom }}{% endif %}</td>
+            <td>{% if eleve.classe %}{{ eleve.classe.nom_classe }}{% endif %}</td>
+            <td>{{ eleve.mail }}</td>
+            <td><img src="http://192.168.1.42/PADRE/src/img/{{ eleve.url_photo }}"/></td>
+            <td><a href="{{ path('admin_eleve',{ 'action': 'edit' , 'eleve': eleve.id }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_eleve',{ 'action': 'del' , 'eleve': eleve.id }) }}"><i class="fa fa-trash" ></i></a></td>
+        </tr>    
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+
+
 {% endblock %}

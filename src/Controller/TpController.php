@@ -142,7 +142,7 @@ class TpController extends AbstractController
         if($classe == null){
             $classe=$eleveRepo->findAll()[0]->getClasse();
         }
-        $eleves=$eleveRepo->findBy(["classe"=>$classe]);
+        $eleves=$eleveRepo->findBy(["classe"=>$classe],["nom" => 'ASC']);
         dump($classe);
         $eleveParClasse["eleve"]=[];
         $allPlanning=[];
@@ -234,7 +234,7 @@ class TpController extends AbstractController
      */
     public function index(Request $request,PlanningRepository $planningRepo,Planning_eleveRepository $planningeleveRepository,NiveauRepository $niveauRepo,ClasseRepository $classeRepository,TpRepository $tpsRepo,EleveRepository $eleveRepo,tp_noteRepository $tp_noteRepository,Competence_tpRepository $compTpRepo){
 
-        $request->getSession()->set("admin",false);
+         $request->getSession()->set("admin",false);
         
         $notesbis=$tp_noteRepository->findAll();
         $classes=$classeRepository->findAll();
@@ -250,14 +250,16 @@ class TpController extends AbstractController
         if($classe == null){
             $classe=$eleveRepo->findAll()[0]->getClasse();;
         }
-        $eleves=$eleveRepo->findBy(["classe"=>$classe]);
+        $eleves=$eleveRepo->findBy(["classe"=>$classe],["nom"=>'ASC']);
         $eleveParClasse["eleve"] =[];
         $allPlanning=[];
         $note=[];
         foreach($eleves as $eleve){
 
             
-            $eleveParClasse["eleve"][]=$eleve;
+            $eleveParClasse["eleve"][$eleve->getId()]=$eleve;
+	    $eleveParClasse["eleve"][$eleve->getBinome()->getId()]=$eleve->getBinome();
+		
 
         }
         foreach($planningRepo->findBy(["classe"=>$classe]) as $planning)
@@ -284,7 +286,6 @@ class TpController extends AbstractController
             "niveaux"=>$niveauRepo->findAll(),
             "planning"=>$planning_
         ]);
-
 
     }
 

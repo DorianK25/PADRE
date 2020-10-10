@@ -36,11 +36,6 @@ class EleveType extends AbstractType
                 ->setParameter('classe', $options["data"]->getClasse());;
             }
         ])
-        ->add('groupe',EntityType::class,[
-            "class"=>Groupe::class,
-            "data"=>$options["data"]->getGroupe(),
-            'required'=>false
-        ])
         ->add('classe',EntityType::class,[
             "class"=>Classe::class,
             'required'=>false

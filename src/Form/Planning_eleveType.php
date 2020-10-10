@@ -21,6 +21,7 @@ class Planning_eleveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	dump($options["data"]["eleves"]);
         if(!array_key_exists("entity",$options["data"])){
             $builder->add('planning',EntityType::class,[
                 "class"=>Planning::class,
@@ -31,6 +32,7 @@ class Planning_eleveType extends AbstractType
                 
             ])->add('binome',EntityType::class,[
                 "class"=>Eleve::class,
+		"choices"=>$options["data"]["eleves"],
             ])->add('tp',EntityType::class,[
                 "class"=>Tp::class,
                 "choices"=>$options["data"]["tps"],
@@ -48,7 +50,8 @@ class Planning_eleveType extends AbstractType
                 "data"=>$options["data"]["entity"]->getEleve()
             ])->add('binome',EntityType::class,[
                 "class"=>Eleve::class,
-                "data"=>$options["data"]["entity"]->getBinome()
+                "data"=>$options["data"]["entity"]->getBinome(),
+                "choices"=>$options["data"]["eleves"]
             ])->add('tp',EntityType::class,[
                 "class"=>Tp::class,
                 "choices"=>$options["data"]["tps"],
