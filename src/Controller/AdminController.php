@@ -492,6 +492,9 @@ class AdminController extends AbstractController
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_planning_eleve',[
                         "action"=>"index",
+                        "niveau"=>$request->get("niveau"),
+                        "classe"=>$request->get("classe"),
+
                     ]);
                 }
                 return $this->render('admin/planning_eleveAdmin.html.twig',[
@@ -505,6 +508,7 @@ class AdminController extends AbstractController
             break;
 
             case "edit":
+                if($request->get("planning_eleve")!= null)
                 $option["entity"]=$planning_eleveRepository->find($request->get("planning_eleve"));
                 $form=$this->createForm(planning_eleveType::class,$option);
                 $form->handleRequest($request);
@@ -515,6 +519,8 @@ class AdminController extends AbstractController
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_planning_eleve',[
                         "action"=>"index",
+                        "niveau"=>$request->get("niveau"),
+                        "classe"=>$request->get("classe"),
                     ]);
                 }
                 return $this->render('admin/planning_eleveAdmin.html.twig',[
