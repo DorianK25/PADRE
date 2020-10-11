@@ -540,6 +540,8 @@ class AdminController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 return $this->redirectToRoute('admin_planning_eleve',[
                     "action"=>"index",
+                    "niveau"=>$request->get("niveau"),
+                    "classe"=>$request->get("classe"),
                 ]);
             break;
 
