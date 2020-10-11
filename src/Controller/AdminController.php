@@ -444,7 +444,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('formAdmin');
         $tps=$tpRepository->findBy(["niveau"=>$request->get("niveau")]);
         $plannings=[];
-        dump($tps);
+        dump($request->get("niveau"));
         if(empty($tps)){
             if($request->get("classe")==null)
             	$plannings=$planning_eleveRepository->findAll();

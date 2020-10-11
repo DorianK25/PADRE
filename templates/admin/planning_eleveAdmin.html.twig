@@ -84,7 +84,7 @@
             <td>
                 {% if niveauSelectionne is not null %}
                     {% if classeSelect is not null %}
-                        <a href="{{ path('admin_planning_eleve',{ 'action': 'edit' , 'planning_eleve': planning.id , 'niveau':niveauSelectionne ,"classe":classeSelect }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_planning_eleve',{ 'action': 'del' , 'planning_eleve': planning.id ,"classe":classeSelect}) }}"><i class="fa fa-trash" ></i></a></td>
+                        <a href="{{ path('admin_planning_eleve',{ 'action': 'edit' , 'planning_eleve': planning.id , 'niveau':niveauSelectionne ,"classe":classeSelect }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_planning_eleve',{ 'action': 'del' , 'planning_eleve': planning.id ,"classe":classeSelect, 'niveau':niveauSelectionne}) }}"><i class="fa fa-trash" ></i></a></td>
                     {% else %}
                         <a href="{{ path('admin_planning_eleve',{ 'action': 'edit' , 'planning_eleve': planning.id ,'niveau':niveauSelectionne }) }}"><i class="fas fa-pencil-alt"></i></a> <a href="{{ path('admin_planning_eleve',{ 'action': 'del' , 'planning_eleve': planning.id , 'niveau':niveauSelectionne }) }}"><i class="fa fa-trash" ></i></a></td>   
                     {% endif %}
