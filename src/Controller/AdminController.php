@@ -366,7 +366,7 @@ class AdminController extends AbstractController
 
         if(!$request->getSession()->get("admin"))
         return $this->redirectToRoute('formAdmin');
-        $plannings=$planningRepository->findBy([],["date"=>"ASC"]);
+        $plannings=$planningRepository->findBy([],["classe"=>"ASC"]);
 
         $action=$request->get("action");
 
@@ -454,6 +454,7 @@ class AdminController extends AbstractController
         foreach($planning_eleveRepository->findBy(["tp"=>$tp],['Planning'=>'ASC']) as $planning){
             if($planning->getPlanning()->getClasse()->getId()==$request->get("classe"))
                 $plannings[]=$planning;
+                
                 }
         $option["tps"]=$tps;
         $option["eleves"]=$eleveRepo->findBy(["classe"=>$request->get("classe")]);
@@ -464,6 +465,11 @@ class AdminController extends AbstractController
         $niveaux=$niveauRepository->findAll();
         $action=$request->get("action");
         
+        foreach($planningRepository->findBy(["classe"=>$request->get("classe")],["date"=>'ASC']) as $planning)
+            $option["planning"][]=$planning;
+
+        if(empty($option["planning"]))
+            $option["planning"]=$planningRepository->findBy([],["date"=>'ASC']);
         dump($plannings);
         switch($action){
 
