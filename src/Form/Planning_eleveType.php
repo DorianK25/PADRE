@@ -31,6 +31,7 @@ class Planning_eleveType extends AbstractType
                 "choices"=>$options["data"]["eleves"],
                 
             ])->add('binome',EntityType::class,[
+                "data"=>$options["data"]["eleves"][0]->getBinome(),
                 "class"=>Eleve::class,
 		"choices"=>$options["data"]["eleves"],
             ])->add('tp',EntityType::class,[

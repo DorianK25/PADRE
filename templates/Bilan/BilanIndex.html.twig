@@ -1,0 +1,25 @@
+{% extends "admin/MainAdmin.html.twig" %}
+
+
+{% block content %}
+
+    <select class="form-control" id="classe">
+    {% for classe in classes %}
+        <option value="{{ classe.id }}">{{ classe.nom_classe }} {{ classe.annee }}</option>
+    {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-primary">Valider</button>
+
+{% endblock %}
+
+
+    {% block script %}
+    <script>
+        $("button").click(function(){
+
+            window.location.href = "classe?classe="+$("#classe").val();
+
+        })
+    </script>
+    {% endblock %}
