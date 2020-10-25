@@ -26,7 +26,8 @@ class Planning_eleveType extends AbstractType
             $builder->add('planning',EntityType::class,[
                 "class"=>Planning::class,
                 "choices"=>$options["data"]["planning"],
-                "choice_label" => "nom"
+                "data"=>$options["data"]["planning"][0],
+                "choice_label" => "nom",
             ])->add('eleve',EntityType::class,[
                 "class"=>Eleve::class,
                 "choices"=>$options["data"]["eleves"],
