@@ -17,8 +17,7 @@
     
         <option value="null" selected></option>
     {% for niveau in niveaux %}
-        <option {% if plannings is empty %}
-    {% else %}{% if niveau.id == niveauSelectionne %}selected{% endif %}{% endif %} value="{{ niveau.id }}">{{ niveau.nom }}</option>
+        <option {% if niveau.id == niveauSelectionne %}selected{% endif %} value="{{ niveau.id }}">{{ niveau.nom }}</option>
     {% endfor %}
     
 </select>
