@@ -457,7 +457,7 @@ class AdminController extends AbstractController
                 
                 }
         $option["tps"]=$tps;
-        $option["eleves"]=$eleveRepo->findBy(["classe"=>$request->get("classe")]);
+        $option["eleves"]=$eleveRepo->findBy(["classe"=>$request->get("classe")],["nom"=>'ASC']);
 	
 
         if($request->get("classe")==null)
